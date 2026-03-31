@@ -13,7 +13,7 @@ tags:
 # Verify we see the snap prompt
 - assertVisible: "Time for a snap!"
 - assertVisible:
-    text: "Take a photo of your starter and Bub will analyze it for you"
+    text: "Take a photo of your starter and Kiko will analyze it for you"
 
 # Tap Take Photo — this opens the camera (will show permission dialog on real device)
 - tapOn: "Take Photo"

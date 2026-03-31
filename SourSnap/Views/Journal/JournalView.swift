@@ -28,7 +28,7 @@ struct JournalView: View {
 
     private var emptyState: some View {
         VStack(spacing: 20) {
-            BubMascot(pose: .hero, size: 180)
+            KikoMascot(pose: .hero, size: 180)
 
             Text("Your journey starts with a snap!")
                 .font(.system(size: 20, weight: .semibold, design: .rounded))

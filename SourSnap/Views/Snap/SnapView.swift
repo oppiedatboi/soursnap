@@ -65,13 +65,13 @@ struct SnapView: View {
         VStack(spacing: 24) {
             Spacer().frame(height: 40)
 
-            BubMascot(pose: .snap, size: 180)
+            KikoMascot(pose: .snap, size: 180)
 
             Text("Time for a snap!")
                 .font(.system(size: 24, weight: .bold, design: .rounded))
                 .foregroundStyle(Color.appTextPrimary)
 
-            Text("Take a photo of your starter and Bub will analyze it for you")
+            Text("Take a photo of your starter and Kiko will analyze it for you")
                 .font(.system(size: 16, design: .rounded))
                 .foregroundStyle(Color.appTextSecondary)
                 .multilineTextAlignment(.center)
@@ -170,9 +170,9 @@ struct SnapView: View {
                     .shadow(color: Color.appTextPrimary.opacity(0.1), radius: 12, y: 6)
             }
 
-            BubMascot(pose: .thinking, size: 100)
+            KikoMascot(pose: .thinking, size: 100)
 
-            Text("Bub is analyzing...")
+            Text("Kiko is analyzing...")
                 .font(.system(size: 18, weight: .semibold, design: .rounded))
                 .foregroundStyle(Color.appTextPrimary)
 
@@ -192,7 +192,7 @@ struct SnapView: View {
         VStack(spacing: 24) {
             Spacer().frame(height: 40)
 
-            BubMascot(pose: .celebrating, size: 160)
+            KikoMascot(pose: .celebrating, size: 160)
 
             HStack(spacing: 8) {
                 Image(systemName: "checkmark.circle.fill")

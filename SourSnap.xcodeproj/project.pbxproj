@@ -13,7 +13,7 @@
 		0E72DD6E08DE9CA2C108EB1E /* KiboWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = A444802B79B2DC8442970232 /* KiboWidget.swift */; };
 		0F017949B87DED29755FE102 /* JournalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0388F8EF3EF26E35E8DDBB3 /* JournalView.swift */; };
 		0FC309C70CABCB494F9343C3 /* SnapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9F73AFE5A52D172AF626C6F /* SnapView.swift */; };
-		106C9851397DB59D516DE957 /* BubMascot.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD1E2A9A9DF5B239A36BBC10 /* BubMascot.swift */; };
+		106C9851397DB59D516DE957 /* KikoMascot.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD1E2A9A9DF5B239A36BBC10 /* KikoMascot.swift */; };
 		111B8A2D869EEB3EEDEA7620 /* HapticManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FD644911A24B4F1EA44E7DE /* HapticManager.swift */; };
 		1A26F0FD33664B49F0CF0255 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 94AAC1DA1A7AC14D2BD59877 /* Assets.xcassets */; };
 		1BF8606343B5EDE598479CDC /* ShareCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26BBE90A8E41E5EE938A0780 /* ShareCardView.swift */; };
@@ -91,7 +91,7 @@
 		A42677B4E2AFCD3CD6A93FC9 /* SourSnap.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = SourSnap.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A444802B79B2DC8442970232 /* KiboWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KiboWidget.swift; sourceTree = "<group>"; };
 		AC5A491B0DC6FE5E828F42F2 /* NotificationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationManager.swift; sourceTree = "<group>"; };
-		AD1E2A9A9DF5B239A36BBC10 /* BubMascot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BubMascot.swift; sourceTree = "<group>"; };
+		AD1E2A9A9DF5B239A36BBC10 /* KikoMascot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KikoMascot.swift; sourceTree = "<group>"; };
 		BB66377A2BE44E31E8C324EE /* StarterProfile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StarterProfile.swift; sourceTree = "<group>"; };
 		BBCA01C0D5BD544C268CA03A /* KiboWidgetBundle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KiboWidgetBundle.swift; sourceTree = "<group>"; };
 		C0388F8EF3EF26E35E8DDBB3 /* JournalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JournalView.swift; sourceTree = "<group>"; };
@@ -182,7 +182,7 @@
 		518522DC65856F9FFD56B6DE /* Components */ = {
 			isa = PBXGroup;
 			children = (
-				AD1E2A9A9DF5B239A36BBC10 /* BubMascot.swift */,
+				AD1E2A9A9DF5B239A36BBC10 /* KikoMascot.swift */,
 				26BBE90A8E41E5EE938A0780 /* ShareCardView.swift */,
 				E6728ED8DF0683B40CAA4E2B /* ShimmerEffect.swift */,
 				2D2786A12F3766E3BB03D311 /* SlidingTabBar.swift */,
@@ -379,7 +379,7 @@
 				06A9184F7E4C8733B37895B0 /* AnalysisCardView.swift in Sources */,
 				D1D3EDDB49524DD3110B27D6 /* AppColors.swift in Sources */,
 				D4C3B2A1F5E60001D4C3B2A1 /* AuthManager.swift in Sources */,
-				106C9851397DB59D516DE957 /* BubMascot.swift in Sources */,
+				106C9851397DB59D516DE957 /* KikoMascot.swift in Sources */,
 				E5B56E19FEDCD4ADEBFB7CE0 /* CameraView.swift in Sources */,
 				9B455AC55A29FFBDF67993E8 /* ChatMessage.swift in Sources */,
 				D94542ECE9983016F8CDC92C /* ChatView.swift in Sources */,
@@ -437,7 +437,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_CFBundleDisplayName = "Kibo Widget";
+				INFOPLIST_KEY_CFBundleDisplayName = "Kiko Dough Widget";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -461,8 +461,9 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_NSCameraUsageDescription = "SourSnap needs camera access to photograph your sourdough starter";
-				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "SourSnap needs photo library access to select starter photos";
+				INFOPLIST_KEY_CFBundleDisplayName = "Kiko Dough";
+				INFOPLIST_KEY_NSCameraUsageDescription = "Kiko Dough needs camera access to photograph your sourdough starter";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Kiko Dough needs photo library access to select starter photos";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -489,8 +490,9 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_NSCameraUsageDescription = "SourSnap needs camera access to photograph your sourdough starter";
-				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "SourSnap needs photo library access to select starter photos";
+				INFOPLIST_KEY_CFBundleDisplayName = "Kiko Dough";
+				INFOPLIST_KEY_NSCameraUsageDescription = "Kiko Dough needs camera access to photograph your sourdough starter";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Kiko Dough needs photo library access to select starter photos";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -584,7 +586,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_CFBundleDisplayName = "Kibo Widget";
+				INFOPLIST_KEY_CFBundleDisplayName = "Kiko Dough Widget";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",

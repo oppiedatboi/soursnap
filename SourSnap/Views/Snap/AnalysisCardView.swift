@@ -8,9 +8,9 @@ struct AnalysisCardView: View {
         VStack(spacing: 16) {
             // Header
             HStack {
-                BubMascot(pose: .bubbly, size: 48)
+                KikoMascot(pose: .bubbly, size: 48)
                 VStack(alignment: .leading, spacing: 2) {
-                    Text("Bub's Analysis")
+                    Text("Kiko's Analysis")
                         .font(.system(size: 18, weight: .bold, design: .rounded))
                         .foregroundStyle(Color.appTextPrimary)
                     Text("Here's what I see!")

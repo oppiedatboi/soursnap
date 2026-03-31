@@ -8,8 +8,8 @@ name: "Onboarding Flow — swipe through 3 pages and tap Get Started"
 
 - launchApp
 
-# Page 1 — "Meet Bub!"
-- assertVisible: "Meet Bub!"
+# Page 1 — "Meet Kiko!"
+- assertVisible: "Meet Kiko!"
 - assertVisible: "Your sourdough companion"
 - tapOn: "Next"
 

@@ -34,8 +34,9 @@ targets:
         INFOPLIST_KEY_UILaunchScreen_Generation: YES
         INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad: "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight"
         INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone: "UIInterfaceOrientationPortrait"
-        INFOPLIST_KEY_NSCameraUsageDescription: "SourSnap needs camera access to photograph your sourdough starter"
-        INFOPLIST_KEY_NSPhotoLibraryUsageDescription: "SourSnap needs photo library access to select starter photos"
+        INFOPLIST_KEY_CFBundleDisplayName: "Kiko Dough"
+        INFOPLIST_KEY_NSCameraUsageDescription: "Kiko Dough needs camera access to photograph your sourdough starter"
+        INFOPLIST_KEY_NSPhotoLibraryUsageDescription: "Kiko Dough needs photo library access to select starter photos"
         GENERATE_INFOPLIST_FILE: YES
         PRODUCT_BUNDLE_IDENTIFIER: com.soursnap.app
         PRODUCT_NAME: SourSnap
@@ -56,7 +57,7 @@ targets:
     settings:
       base:
         GENERATE_INFOPLIST_FILE: YES
-        INFOPLIST_KEY_CFBundleDisplayName: Kibo Widget
+        INFOPLIST_KEY_CFBundleDisplayName: Kiko Dough Widget
         INFOPLIST_KEY_NSHumanReadableCopyright: ""
         PRODUCT_BUNDLE_IDENTIFIER: com.soursnap.app.kibo-widget
         PRODUCT_NAME: KiboWidgetExtension

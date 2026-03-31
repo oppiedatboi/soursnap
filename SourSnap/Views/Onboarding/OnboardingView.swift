@@ -13,9 +13,9 @@ struct OnboardingView: View {
                 TabView(selection: $currentPage) {
                     OnboardingPageView(
                         pose: .hero,
-                        title: "Meet Bub!",
+                        title: "Meet Kiko!",
                         subtitle: "Your sourdough companion",
-                        description: "Bub's seen a thousand starters and loves every one. Let's grow something amazing together.",
+                        description: "Kiko's seen a thousand starters and loves every one. Let's grow something amazing together.",
                         isVisible: appearedPages.contains(0)
                     )
                     .tag(0)
@@ -25,7 +25,7 @@ struct OnboardingView: View {
                         pose: .snap,
                         title: "Snap Daily",
                         subtitle: "AI-powered analysis",
-                        description: "Take a photo of your starter each day. Bub will analyze the bubbles, rise, and color to track your progress.",
+                        description: "Take a photo of your starter each day. Kiko will analyze the bubbles, rise, and color to track your progress.",
                         isVisible: appearedPages.contains(1)
                     )
                     .tag(1)
@@ -35,7 +35,7 @@ struct OnboardingView: View {
                         pose: .celebrating,
                         title: "Never Bake Alone",
                         subtitle: "Your personal mentor",
-                        description: "Chat with Bub anytime. Journal your journey. Celebrate every milestone together.",
+                        description: "Chat with Kiko anytime. Journal your journey. Celebrate every milestone together.",
                         isVisible: appearedPages.contains(2)
                     )
                     .tag(2)
@@ -93,7 +93,7 @@ private struct OnboardingPageView: View {
         VStack(spacing: 20) {
             Spacer()
 
-            BubMascot(pose: pose, size: 200)
+            KikoMascot(pose: pose, size: 200)
                 .scaleEffect(isVisible ? 1 : 0.5)
                 .opacity(isVisible ? 1 : 0)
                 .animation(.spring(response: 0.6, dampingFraction: 0.7), value: isVisible)

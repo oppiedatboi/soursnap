@@ -27,7 +27,7 @@ struct ShareCardRenderer {
         starterName: String,
         daysOld: Int,
         healthScore: Double?,
-        bubMascotImage: UIImage?
+        kikoMascotImage: UIImage?
     ) -> UIImage {
         // Calculate total card height based on content
         let headerHeight: CGFloat = starterPhoto != nil ? photoHeight : 80
@@ -140,16 +140,16 @@ struct ShareCardRenderer {
                 )
             }
 
-            // ── Bub mascot in corner ──
-            if let bub = bubMascotImage {
-                let bubSize: CGFloat = 56
-                let bubRect = CGRect(
-                    x: infoRect.maxX - 16 - bubSize,
-                    y: infoRect.maxY - 12 - bubSize,
-                    width: bubSize,
-                    height: bubSize
+            // ── Kiko mascot in corner ──
+            if let kiko = kikoMascotImage {
+                let kikoSize: CGFloat = 56
+                let kikoRect = CGRect(
+                    x: infoRect.maxX - 16 - kikoSize,
+                    y: infoRect.maxY - 12 - kikoSize,
+                    width: kikoSize,
+                    height: kikoSize
                 )
-                bub.draw(in: bubRect)
+                kiko.draw(in: kikoRect)
             }
 
             yOffset += infoHeight + 16
@@ -160,7 +160,7 @@ struct ShareCardRenderer {
                 .font: brandFont,
                 .foregroundColor: textSecondary
             ]
-            let brandStr = "Tracked with Kibo" as NSString
+            let brandStr = "Tracked with Kiko Dough" as NSString
             let brandSize = brandStr.size(withAttributes: brandAttrs)
             brandStr.draw(
                 at: CGPoint(

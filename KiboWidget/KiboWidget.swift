@@ -64,7 +64,7 @@ struct KiboTimelineProvider: AppIntentTimelineProvider {
 import AppIntents
 
 struct KiboWidgetIntent: WidgetConfigurationIntent {
-    static let title: LocalizedStringResource = "Kibo Widget"
+    static let title: LocalizedStringResource = "Kiko Dough Widget"
     static let description: IntentDescription = "Shows your sourdough starter status"
 }
 
@@ -199,7 +199,7 @@ struct KiboWidget: Widget {
                 }
             }
         }
-        .configurationDisplayName("Kibo Starter")
+        .configurationDisplayName("Kiko Dough Starter")
         .description("See your sourdough starter's status at a glance.")
         .supportedFamilies([.systemSmall, .systemMedium])
     }
