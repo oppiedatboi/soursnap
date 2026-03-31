@@ -33,6 +33,10 @@
 		D94542ECE9983016F8CDC92C /* ChatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CCC98F2E06E5EAA7989112B /* ChatView.swift */; };
 		E5B56E19FEDCD4ADEBFB7CE0 /* CameraView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EF3DA6AB6B61E0253D6ECA7 /* CameraView.swift */; };
 		F1A2B3C4D5E6F7081234ABCD /* ProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4E5F60718DEADBEEF /* ProgressView.swift */; };
+		D4C3B2A1F5E60001D4C3B2A1 /* AuthManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4E5F60001A1B2C3D4 /* AuthManager.swift */; };
+		D4C3B2A1F5E60002D4C3B2A1 /* StoreManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4E5F60002A1B2C3D4 /* StoreManager.swift */; };
+		D4C3B2A1F5E60003D4C3B2A1 /* SignInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4E5F60003A1B2C3D4 /* SignInView.swift */; };
+		D4C3B2A1F5E60004D4C3B2A1 /* PaywallView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4E5F60004A1B2C3D4 /* PaywallView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -63,9 +67,29 @@
 		FA68E737C048199831633880 /* FeedingLog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedingLog.swift; sourceTree = "<group>"; };
 		FE9A1862B12AD5085AAACC62 /* JournalEntryDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JournalEntryDetailView.swift; sourceTree = "<group>"; };
 		A1B2C3D4E5F60718DEADBEEF /* ProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressView.swift; sourceTree = "<group>"; };
+		A1B2C3D4E5F60001A1B2C3D4 /* AuthManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthManager.swift; sourceTree = "<group>"; };
+		A1B2C3D4E5F60002A1B2C3D4 /* StoreManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreManager.swift; sourceTree = "<group>"; };
+		A1B2C3D4E5F60003A1B2C3D4 /* SignInView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInView.swift; sourceTree = "<group>"; };
+		A1B2C3D4E5F60004A1B2C3D4 /* PaywallView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaywallView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
+		CAFE0002CAFE0002CAFE0002 /* Auth */ = {
+			isa = PBXGroup;
+			children = (
+				A1B2C3D4E5F60003A1B2C3D4 /* SignInView.swift */,
+			);
+			path = Auth;
+			sourceTree = "<group>";
+		};
+		CAFE0003CAFE0003CAFE0003 /* Paywall */ = {
+			isa = PBXGroup;
+			children = (
+				A1B2C3D4E5F60004A1B2C3D4 /* PaywallView.swift */,
+			);
+			path = Paywall;
+			sourceTree = "<group>";
+		};
 		05A81443AD860062ECE2B4FF /* Profile */ = {
 			isa = PBXGroup;
 			children = (
@@ -131,9 +155,11 @@
 		68EFB5336DF2C6FFCF0AA92C /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				A1B2C3D4E5F60001A1B2C3D4 /* AuthManager.swift */,
 				7FD644911A24B4F1EA44E7DE /* HapticManager.swift */,
 				DB9107F81E14E572EEB29780 /* OpenAIService.swift */,
 				5C460C79E0B72520712AD6F3 /* PhotoStorageManager.swift */,
+				A1B2C3D4E5F60002A1B2C3D4 /* StoreManager.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -192,10 +218,12 @@
 			isa = PBXGroup;
 			children = (
 				735B65249F2A938195993FCA /* ContentView.swift */,
+				CAFE0002CAFE0002CAFE0002 /* Auth */,
 				84A9B2F471418E916D951636 /* Chat */,
 				518522DC65856F9FFD56B6DE /* Components */,
 				54C2C39BF2CCC5F468D8CD77 /* Journal */,
 				BD75D04777DA71CB8EDE7F7C /* Onboarding */,
+				CAFE0003CAFE0003CAFE0003 /* Paywall */,
 				05A81443AD860062ECE2B4FF /* Profile */,
 				CAFE0001CAFE0001CAFE0001 /* Progress */,
 				B6A56662C2D56217E0A99621 /* Snap */,
@@ -275,6 +303,7 @@
 			files = (
 				06A9184F7E4C8733B37895B0 /* AnalysisCardView.swift in Sources */,
 				D1D3EDDB49524DD3110B27D6 /* AppColors.swift in Sources */,
+				D4C3B2A1F5E60001D4C3B2A1 /* AuthManager.swift in Sources */,
 				106C9851397DB59D516DE957 /* BubMascot.swift in Sources */,
 				E5B56E19FEDCD4ADEBFB7CE0 /* CameraView.swift in Sources */,
 				9B455AC55A29FFBDF67993E8 /* ChatMessage.swift in Sources */,
@@ -288,15 +317,18 @@
 				0F017949B87DED29755FE102 /* JournalView.swift in Sources */,
 				C284A3D475C650583951029B /* OnboardingView.swift in Sources */,
 				9D420E2A0E86EFC4887D4B88 /* OpenAIService.swift in Sources */,
+				D4C3B2A1F5E60004D4C3B2A1 /* PaywallView.swift in Sources */,
 				6E263D22893BEACD335EB32C /* PhotoStorageManager.swift in Sources */,
 				F1A2B3C4D5E6F7081234ABCD /* ProgressView.swift in Sources */,
 				0B8575175567D4BEF7C7212B /* ProfileView.swift in Sources */,
 				2CF73702D6A157EEE14DE0EB /* Secrets.swift in Sources */,
 				1ED40AEB9723DF660B2938A9 /* ShimmerEffect.swift in Sources */,
+				D4C3B2A1F5E60003D4C3B2A1 /* SignInView.swift in Sources */,
 				36266AD06173FC596971B8B1 /* SlidingTabBar.swift in Sources */,
 				0FC309C70CABCB494F9343C3 /* SnapView.swift in Sources */,
 				A7A885F2C81F510835F01437 /* SourSnapApp.swift in Sources */,
 				82812445CCAB36556DDD995F /* StarterProfile.swift in Sources */,
+				D4C3B2A1F5E60002D4C3B2A1 /* StoreManager.swift in Sources */,
 				523318663EFE42766772D3FA /* UserProfile.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
