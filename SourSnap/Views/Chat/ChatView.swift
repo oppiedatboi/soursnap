@@ -45,11 +45,18 @@ struct ChatView: View {
             VStack(spacing: 24) {
                 Spacer().frame(height: 20)
 
-                BubMascot(pose: .thinking, size: 160)
+                BubMascot(pose: .hero, size: 160)
 
-                Text("Ask me anything about sourdough!")
-                    .font(.system(size: 20, weight: .semibold, design: .rounded))
-                    .foregroundStyle(Color.appTextPrimary)
+                VStack(spacing: 8) {
+                    Text("Hey! I'm Bub, your sourdough buddy")
+                        .font(.system(size: 20, weight: .semibold, design: .rounded))
+                        .foregroundStyle(Color.appTextPrimary)
+                        .multilineTextAlignment(.center)
+
+                    Text("Ask me anything about your starter")
+                        .font(.system(size: 15, design: .rounded))
+                        .foregroundStyle(Color.appTextSecondary)
+                }
 
                 VStack(spacing: 10) {
                     ForEach(suggestedQuestions, id: \.self) { question in
@@ -98,6 +105,7 @@ struct ChatView: View {
                 .padding(.top, 12)
                 .padding(.bottom, 16)
             }
+            .scrollDismissesKeyboard(.interactively)
             .onChange(of: messages.count) { _, _ in
                 scrollToBottom(proxy: proxy)
             }
@@ -149,6 +157,10 @@ struct ChatView: View {
 
     // MARK: - Input Bar
 
+    private var hasText: Bool {
+        !inputText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+    }
+
     private var inputBar: some View {
         HStack(spacing: 12) {
             TextField("Ask Bub anything...", text: $inputText, axis: .vertical)
@@ -162,15 +174,18 @@ struct ChatView: View {
                 .submitLabel(.send)
                 .onSubmit { sendCurrentMessage() }
 
-            Button {
-                sendCurrentMessage()
-            } label: {
-                Image(systemName: "arrow.up.circle.fill")
-                    .font(.system(size: 36))
-                    .foregroundStyle(inputText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ? Color.appBorder : Color.appPrimary)
+            if hasText {
+                Button {
+                    sendCurrentMessage()
+                } label: {
+                    Image(systemName: "arrow.up.circle.fill")
+                        .font(.system(size: 36))
+                        .foregroundStyle(Color.appPrimary)
+                }
+                .transition(.scale.combined(with: .opacity))
             }
-            .disabled(inputText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
         }
+        .animation(.spring(response: 0.3, dampingFraction: 0.8), value: hasText)
         .padding(.horizontal, 16)
         .padding(.vertical, 10)
         .background(Color.appBackground)
