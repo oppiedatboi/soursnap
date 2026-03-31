@@ -16,6 +16,7 @@
 		106C9851397DB59D516DE957 /* BubMascot.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD1E2A9A9DF5B239A36BBC10 /* BubMascot.swift */; };
 		111B8A2D869EEB3EEDEA7620 /* HapticManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FD644911A24B4F1EA44E7DE /* HapticManager.swift */; };
 		1A26F0FD33664B49F0CF0255 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 94AAC1DA1A7AC14D2BD59877 /* Assets.xcassets */; };
+		1BF8606343B5EDE598479CDC /* ShareCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26BBE90A8E41E5EE938A0780 /* ShareCardView.swift */; };
 		1ED40AEB9723DF660B2938A9 /* ShimmerEffect.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6728ED8DF0683B40CAA4E2B /* ShimmerEffect.swift */; };
 		24D942451386E90E8B427A3F /* FeedingLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA68E737C048199831633880 /* FeedingLog.swift */; };
 		2CF73702D6A157EEE14DE0EB /* Secrets.swift in Sources */ = {isa = PBXBuildFile; fileRef = E12FA88169E3EC8986CDF2D6 /* Secrets.swift */; };
@@ -68,6 +69,7 @@
 		0D45996D6CED155664A84D9E /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
 		18B7F0604EBAA63054FF5EE3 /* JournalEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JournalEntry.swift; sourceTree = "<group>"; };
 		19F70B90B91F574F8C1DDED1 /* ChatMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatMessage.swift; sourceTree = "<group>"; };
+		26BBE90A8E41E5EE938A0780 /* ShareCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareCardView.swift; sourceTree = "<group>"; };
 		2D18CD4096A8F7CEA36D9452 /* UserProfile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfile.swift; sourceTree = "<group>"; };
 		2D2786A12F3766E3BB03D311 /* SlidingTabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SlidingTabBar.swift; sourceTree = "<group>"; };
 		3A808320226016D2A30FBD69 /* SourSnapApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SourSnapApp.swift; sourceTree = "<group>"; };
@@ -155,6 +157,7 @@
 			isa = PBXGroup;
 			children = (
 				AD1E2A9A9DF5B239A36BBC10 /* BubMascot.swift */,
+				26BBE90A8E41E5EE938A0780 /* ShareCardView.swift */,
 				E6728ED8DF0683B40CAA4E2B /* ShimmerEffect.swift */,
 				2D2786A12F3766E3BB03D311 /* SlidingTabBar.swift */,
 			);
@@ -363,6 +366,7 @@
 				0B8575175567D4BEF7C7212B /* ProfileView.swift in Sources */,
 				D04FC7FC352927CDB643427B /* ProgressView.swift in Sources */,
 				2CF73702D6A157EEE14DE0EB /* Secrets.swift in Sources */,
+				1BF8606343B5EDE598479CDC /* ShareCardView.swift in Sources */,
 				1ED40AEB9723DF660B2938A9 /* ShimmerEffect.swift in Sources */,
 				36266AD06173FC596971B8B1 /* SlidingTabBar.swift in Sources */,
 				0FC309C70CABCB494F9343C3 /* SnapView.swift in Sources */,

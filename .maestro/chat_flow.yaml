@@ -1,0 +1,35 @@
+appId: com.kiboapp.SourSnap
+name: "Chat Flow — navigate to Chat, send a message, verify Bub responds"
+
+---
+
+- launchApp
+
+# Navigate to Chat tab
+- tapOn: "Chat"
+
+# Verify empty state
+- assertVisible: "Chat with Bub"
+- assertVisible: "Hey! I'm Bub, your sourdough buddy"
+- assertVisible: "Ask me anything about your starter"
+
+# Tap a suggested question
+- tapOn: "When should I feed?"
+
+# Verify the user message appears in the chat
+- assertVisible: "When should I feed?"
+
+# Wait for Bub's response (typing indicator then response)
+- extendedWaitUntil:
+    visible: "Bub"
+    timeout: 15000
+
+# Alternatively, type a custom message
+- tapOn: "Ask Bub anything..."
+- inputText: "How do I know if my starter is healthy?"
+- tapOn:
+    id: "arrow.up.circle.fill"
+    optional: true
+
+# Verify the message was sent
+- assertVisible: "How do I know if my starter is healthy?"

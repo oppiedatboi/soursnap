@@ -1,0 +1,30 @@
+appId: com.kiboapp.SourSnap
+name: "Create Profile — fill starter name, select flour type, create"
+
+---
+
+- launchApp
+
+# Navigate to Profile tab
+- tapOn: "Profile"
+
+# Should see the empty-state prompt
+- assertVisible: "Let's name your starter!"
+- tapOn: "Create Profile"
+
+# Create Profile sheet is now open
+- assertVisible: "New Starter"
+
+# Fill in the starter name
+- tapOn: "e.g., Bubbles, Clint Yeastwood..."
+- inputText: "Bubblegum"
+
+# Select a flour type (tap on "Rye" in the segmented picker)
+- tapOn: "Rye"
+
+# Tap create
+- tapOn: "Create Starter"
+
+# Should see the profile content with the new starter name
+- assertVisible: "Bubblegum"
+- assertVisible: "Days Old"

@@ -1,0 +1,27 @@
+appId: com.kiboapp.SourSnap
+name: "Onboarding Flow — swipe through 3 pages and tap Get Started"
+
+---
+
+# Reset onboarding state so the flow always starts fresh
+- clearState
+
+- launchApp
+
+# Page 1 — "Meet Bub!"
+- assertVisible: "Meet Bub!"
+- assertVisible: "Your sourdough companion"
+- tapOn: "Next"
+
+# Page 2 — "Snap Daily"
+- assertVisible: "Snap Daily"
+- assertVisible: "AI-powered analysis"
+- tapOn: "Next"
+
+# Page 3 — "Never Bake Alone"
+- assertVisible: "Never Bake Alone"
+- assertVisible: "Your personal mentor"
+- tapOn: "Get Started"
+
+# After onboarding we should land on the main Journal tab
+- assertVisible: "Journal"

@@ -1,0 +1,85 @@
+appId: com.kiboapp.SourSnap
+name: "Full Journey — onboarding through first snap"
+tags:
+  - smoke
+  - requires-permissions
+
+---
+
+# Start fresh
+- clearState
+
+- launchApp
+
+# ── ONBOARDING ──────────────────────────────
+
+- assertVisible: "Meet Bub!"
+- tapOn: "Next"
+
+- assertVisible: "Snap Daily"
+- tapOn: "Next"
+
+- assertVisible: "Never Bake Alone"
+- tapOn: "Get Started"
+
+# Should land on Journal tab (empty state)
+- assertVisible: "Your journey starts with a snap!"
+
+# ── CREATE PROFILE ──────────────────────────
+
+- tapOn: "Profile"
+- assertVisible: "Let's name your starter!"
+- tapOn: "Create Profile"
+
+- assertVisible: "New Starter"
+- tapOn: "e.g., Bubbles, Clint Yeastwood..."
+- inputText: "Sourdough Sam"
+- tapOn: "Bread Flour"
+- tapOn: "Create Starter"
+
+# Verify profile was created
+- assertVisible: "Sourdough Sam"
+
+# ── TAKE A SNAP ─────────────────────────────
+
+- tapOn: "Snap"
+- assertVisible: "Time for a snap!"
+
+# Use photo picker (camera not available in simulator)
+- tapOn: "Choose from Library"
+
+# Select first photo if available, otherwise dismiss
+- runFlow:
+    when:
+      visible: "Recents"
+    commands:
+      - tapOn:
+          point: "50%,50%"
+      - tapOn:
+          text: "Add"
+          optional: true
+
+# If we got a photo, analyze it
+- runFlow:
+    when:
+      visible: "Looking good!"
+    commands:
+      - tapOn: "Analyze"
+      - assertVisible:
+          text: "Bub is analyzing..."
+          optional: true
+      # Wait for save
+      - extendedWaitUntil:
+          visible: "Saved to Journal!"
+          timeout: 30000
+
+# ── VERIFY JOURNAL ──────────────────────────
+
+- tapOn: "Journal"
+# If the snap was saved, we should see an entry
+# (may still be empty if no photos were available in simulator)
+
+# ── QUICK CHAT CHECK ────────────────────────
+
+- tapOn: "Chat"
+- assertVisible: "Chat with Bub"
