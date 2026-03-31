@@ -9,8 +9,12 @@ struct ContentView: View {
     @State private var selectedTab: AppTab = .journal
     @State private var dragOffset: CGFloat = 0
 
+    private let authManager = AuthManager.shared
+
     var body: some View {
-        if !hasSeenOnboarding {
+        if !authManager.isAuthenticated {
+            SignInView()
+        } else if !hasSeenOnboarding {
             OnboardingView()
         } else {
             mainContent

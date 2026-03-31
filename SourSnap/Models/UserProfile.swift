@@ -10,7 +10,13 @@ final class UserProfile {
     var temperatureUnit: String
     var hasCompletedOnboarding: Bool
     var subscriptionStatus: String
+    var appleUserIdentifier: String?
+    var email: String?
     var createdAt: Date
+
+    var isPro: Bool {
+        subscriptionStatus == "paid"
+    }
 
     init(
         displayName: String = "",
@@ -18,7 +24,9 @@ final class UserProfile {
         feedingReminderTime: Date = Calendar.current.date(from: DateComponents(hour: 8, minute: 0)) ?? .now,
         temperatureUnit: String = "fahrenheit",
         hasCompletedOnboarding: Bool = false,
-        subscriptionStatus: String = "free"
+        subscriptionStatus: String = "free",
+        appleUserIdentifier: String? = nil,
+        email: String? = nil
     ) {
         self.id = UUID()
         self.displayName = displayName
@@ -27,6 +35,8 @@ final class UserProfile {
         self.temperatureUnit = temperatureUnit
         self.hasCompletedOnboarding = hasCompletedOnboarding
         self.subscriptionStatus = subscriptionStatus
+        self.appleUserIdentifier = appleUserIdentifier
+        self.email = email
         self.createdAt = .now
     }
 }
