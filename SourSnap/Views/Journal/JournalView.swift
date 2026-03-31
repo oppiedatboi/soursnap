@@ -7,15 +7,15 @@ struct JournalView: View {
 
     var body: some View {
         NavigationStack {
-            ZStack {
-                Color.appBackground.ignoresSafeArea()
-
+            Group {
                 if entries.isEmpty {
                     emptyState
                 } else {
                     journalList
                 }
             }
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .background(Color.appBackground.ignoresSafeArea())
             .navigationTitle("Journal")
             .navigationBarTitleDisplayMode(.large)
             .toolbarColorScheme(.light, for: .navigationBar)
