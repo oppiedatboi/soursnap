@@ -15,6 +15,7 @@ struct ProfileView: View {
     @State private var showingRename = false
     @State private var showingArchiveConfirm = false
     @State private var showingJourney = false
+    @State private var showingSignOutConfirm = false
     @State private var appeared = false
     @State private var showCelebration = false
     @State private var confettiPieces: [ConfettiPiece] = []
@@ -66,6 +67,15 @@ struct ProfileView: View {
                 if let profile {
                     RenameAlert(profile: profile)
                 }
+            }
+            .alert("Sign Out?", isPresented: $showingSignOutConfirm) {
+                Button("Sign Out", role: .destructive) {
+                    AuthManager.shared.signOut()
+                    HapticManager.medium()
+                }
+                Button("Cancel", role: .cancel) {}
+            } message: {
+                Text("You'll need to sign in again to access your account.")
             }
             .alert("Archive Starter?", isPresented: $showingArchiveConfirm) {
                 Button("Archive", role: .destructive) {
@@ -137,6 +147,11 @@ struct ProfileView: View {
 
                 // Settings
                 settingsSection
+                    .opacity(appeared ? 1 : 0)
+                    .offset(y: appeared ? 0 : 20)
+
+                // Account section
+                accountSection
                     .opacity(appeared ? 1 : 0)
                     .offset(y: appeared ? 0 : 20)
             }
@@ -498,6 +513,58 @@ struct ProfileView: View {
                     )
                     .font(.system(size: 15, design: .rounded))
                     .tint(Color.appPrimary)
+                }
+            }
+        }
+        .padding(16)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(Color.appSurface, in: RoundedRectangle(cornerRadius: 16))
+        .overlay(RoundedRectangle(cornerRadius: 16).stroke(Color.appBorder, lineWidth: 1))
+    }
+
+    // MARK: - Account Section
+
+    private var accountSection: some View {
+        VStack(alignment: .leading, spacing: 14) {
+            Text("Account")
+                .font(.system(size: 16, weight: .bold, design: .rounded))
+                .foregroundStyle(Color.appTextPrimary)
+
+            if AuthManager.shared.isSignedIn {
+                if let email = AuthManager.shared.userEmail {
+                    HStack(spacing: 10) {
+                        Image(systemName: "envelope.fill")
+                            .font(.system(size: 14))
+                            .foregroundStyle(Color.appPrimary)
+                        Text(email)
+                            .font(.system(size: 14, design: .rounded))
+                            .foregroundStyle(Color.appTextSecondary)
+                    }
+                }
+
+                Button {
+                    HapticManager.light()
+                    showingSignOutConfirm = true
+                } label: {
+                    HStack {
+                        Image(systemName: "rectangle.portrait.and.arrow.right")
+                            .font(.system(size: 14, weight: .semibold))
+                        Text("Sign Out")
+                            .font(.system(size: 14, weight: .semibold, design: .rounded))
+                    }
+                    .foregroundStyle(Color.appAlert)
+                    .frame(maxWidth: .infinity)
+                    .padding(.vertical, 12)
+                    .background(Color.appAlert.opacity(0.1), in: RoundedRectangle(cornerRadius: 12))
+                }
+            } else {
+                HStack(spacing: 10) {
+                    Image(systemName: "person.crop.circle.badge.questionmark")
+                        .font(.system(size: 14))
+                        .foregroundStyle(Color.appTextSecondary)
+                    Text("Free tier — Sign in for full access")
+                        .font(.system(size: 14, design: .rounded))
+                        .foregroundStyle(Color.appTextSecondary)
                 }
             }
         }

@@ -4,13 +4,24 @@ import SwiftData
 struct SnapView: View {
     @Environment(\.modelContext) private var modelContext
     @Query private var profiles: [StarterProfile]
+    @Query private var allEntries: [JournalEntry]
+    @Query private var userProfiles: [UserProfile]
     @Binding var selectedTab: AppTab
 
     @State private var capturedImage: UIImage?
     @State private var showCamera = false
     @State private var showPhotoPicker = false
+    @State private var showPaywall = false
     @State private var isAnalyzing = false
     @State private var didSave = false
+
+    private var isProUser: Bool {
+        userProfiles.first?.isPro ?? false
+    }
+
+    private var hasReachedFreeLimit: Bool {
+        !isProUser && allEntries.count >= 3
+    }
 
     var body: some View {
         NavigationStack {
@@ -41,6 +52,9 @@ struct SnapView: View {
             }
             .sheet(isPresented: $showPhotoPicker) {
                 PhotoPickerView(selectedImage: $capturedImage)
+            }
+            .sheet(isPresented: $showPaywall) {
+                PaywallView()
             }
         }
     }
@@ -116,7 +130,11 @@ struct SnapView: View {
             VStack(spacing: 12) {
                 Button {
                     HapticManager.medium()
-                    analyzeAndSave()
+                    if hasReachedFreeLimit {
+                        showPaywall = true
+                    } else {
+                        analyzeAndSave()
+                    }
                 } label: {
                     Label("Analyze", systemImage: "sparkles")
                         .font(.system(size: 17, weight: .bold, design: .rounded))
