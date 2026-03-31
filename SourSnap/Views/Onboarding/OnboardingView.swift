@@ -60,6 +60,7 @@ struct OnboardingView: View {
                         if currentPage < 2 {
                             currentPage += 1
                         } else {
+                            Task { _ = await NotificationManager.shared.requestPermission() }
                             withAnimation(.spring(response: 0.4, dampingFraction: 0.85)) {
                                 hasSeenOnboarding = true
                             }

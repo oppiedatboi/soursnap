@@ -237,6 +237,16 @@ struct SnapView: View {
                 didSave = true
                 HapticManager.success()
 
+                if let profile = profiles.first {
+                    WidgetDataManager.update(
+                        starterName: profile.name,
+                        daysOld: profile.daysSinceBorn,
+                        currentStreak: 0,
+                        lastHealthScore: entry.healthScore,
+                        lastSnapDate: entry.date
+                    )
+                }
+
                 // Navigate back to Journal tab after a brief moment
                 DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
                     withAnimation(.spring(response: 0.35, dampingFraction: 0.8)) {
