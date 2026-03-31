@@ -4,14 +4,15 @@ struct JournalEntryDetailView: View {
     let entry: JournalEntry
     @Environment(\.dismiss) private var dismiss
     @State private var appeared = false
+    @State private var fullImage: UIImage?
 
     var body: some View {
         NavigationStack {
             ScrollView {
                 VStack(spacing: 20) {
-                    // Photo
-                    if let photoData = entry.photo, let uiImage = UIImage(data: photoData) {
-                        Image(uiImage: uiImage)
+                    // Photo — prefer photoPath, fall back to legacy Data
+                    if let image = fullImage {
+                        Image(uiImage: image)
                             .resizable()
                             .aspectRatio(contentMode: .fit)
                             .frame(maxHeight: 300)
@@ -26,13 +27,36 @@ struct JournalEntryDetailView: View {
                         .font(.system(size: 16, weight: .medium, design: .rounded))
                         .foregroundStyle(Color.appTextSecondary)
 
-                    // Ratings
-                    HStack(spacing: 16) {
-                        ratingCard(title: "Bubbles", value: entry.bubbleActivity, icon: "circle.circle.fill")
-                        ratingCard(title: "Rise", value: entry.riseLevel, icon: "arrow.up.circle.fill")
+                    // Health score
+                    if let score = entry.healthScore {
+                        HStack(spacing: 8) {
+                            Image(systemName: "heart.fill")
+                                .font(.system(size: 18))
+                                .foregroundStyle(healthColor(score))
+                            Text("Health: \(Int(score))%")
+                                .font(.system(size: 22, weight: .bold, design: .rounded))
+                                .foregroundStyle(Color.appTextPrimary)
+                        }
+                        .opacity(appeared ? 1 : 0)
+                        .offset(y: appeared ? 0 : 20)
                     }
-                    .opacity(appeared ? 1 : 0)
-                    .offset(y: appeared ? 0 : 20)
+
+                    // Ratings (legacy)
+                    if entry.bubbleActivity > 0 || entry.riseLevel > 0 {
+                        HStack(spacing: 16) {
+                            ratingCard(title: "Bubbles", value: entry.bubbleActivity, icon: "circle.circle.fill")
+                            ratingCard(title: "Rise", value: entry.riseLevel, icon: "arrow.up.circle.fill")
+                        }
+                        .opacity(appeared ? 1 : 0)
+                        .offset(y: appeared ? 0 : 20)
+                    }
+
+                    // AI Analysis
+                    if let analysis = entry.aiAnalysis, !analysis.isEmpty {
+                        infoCard(title: "AI Analysis", content: analysis, icon: "sparkles")
+                            .opacity(appeared ? 1 : 0)
+                            .offset(y: appeared ? 0 : 20)
+                    }
 
                     // Color Assessment
                     if !entry.colorAssessment.isEmpty {
@@ -70,7 +94,7 @@ struct JournalEntryDetailView: View {
                         .offset(y: appeared ? 0 : 20)
                     }
 
-                    // Notes
+                    // User Notes
                     if !entry.userNotes.isEmpty {
                         infoCard(title: "Notes", content: entry.userNotes, icon: "note.text")
                             .opacity(appeared ? 1 : 0)
@@ -100,7 +124,29 @@ struct JournalEntryDetailView: View {
                     appeared = true
                 }
             }
+            .task {
+                loadFullImage()
+            }
         }
+    }
+
+    private func loadFullImage() {
+        // Prefer photoPath from PhotoStorageManager
+        if let photoPath = entry.photoPath,
+           let img = PhotoStorageManager.shared.loadImage(path: photoPath) {
+            fullImage = img
+            return
+        }
+        // Fall back to legacy photo Data blob
+        if let photoData = entry.photo, let img = UIImage(data: photoData) {
+            fullImage = img
+        }
+    }
+
+    private func healthColor(_ score: Double) -> Color {
+        if score >= 70 { return .appSuccess }
+        if score >= 40 { return .appWarning }
+        return .appAlert
     }
 
     private func ratingCard(title: String, value: Int, icon: String) -> some View {
