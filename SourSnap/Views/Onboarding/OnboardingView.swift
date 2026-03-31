@@ -3,7 +3,7 @@ import SwiftUI
 struct OnboardingView: View {
     @AppStorage("hasSeenOnboarding") private var hasSeenOnboarding = false
     @State private var currentPage = 0
-    @State private var mascotAppeared = false
+    @State private var appearedPages: Set<Int> = []
 
     var body: some View {
         ZStack {
@@ -11,29 +11,35 @@ struct OnboardingView: View {
 
             VStack(spacing: 0) {
                 TabView(selection: $currentPage) {
-                    onboardingPage(
+                    OnboardingPageView(
                         pose: .hero,
                         title: "Meet Bub!",
                         subtitle: "Your sourdough companion",
-                        description: "Bub's seen a thousand starters and loves every one. Let's grow something amazing together."
+                        description: "Bub's seen a thousand starters and loves every one. Let's grow something amazing together.",
+                        isVisible: appearedPages.contains(0)
                     )
                     .tag(0)
+                    .onAppear { appearedPages.insert(0) }
 
-                    onboardingPage(
+                    OnboardingPageView(
                         pose: .snap,
                         title: "Snap Daily",
                         subtitle: "AI-powered analysis",
-                        description: "Take a photo of your starter each day. Bub will analyze the bubbles, rise, and color to track your progress."
+                        description: "Take a photo of your starter each day. Bub will analyze the bubbles, rise, and color to track your progress.",
+                        isVisible: appearedPages.contains(1)
                     )
                     .tag(1)
+                    .onAppear { appearedPages.insert(1) }
 
-                    onboardingPage(
+                    OnboardingPageView(
                         pose: .celebrating,
                         title: "Never Bake Alone",
                         subtitle: "Your personal mentor",
-                        description: "Chat with Bub anytime. Journal your journey. Celebrate every milestone together."
+                        description: "Chat with Bub anytime. Journal your journey. Celebrate every milestone together.",
+                        isVisible: appearedPages.contains(2)
                     )
                     .tag(2)
+                    .onAppear { appearedPages.insert(2) }
                 }
                 .tabViewStyle(.page(indexDisplayMode: .never))
 
@@ -52,9 +58,7 @@ struct OnboardingView: View {
                     Button {
                         HapticManager.medium()
                         if currentPage < 2 {
-                            withAnimation(.spring(response: 0.35, dampingFraction: 0.8)) {
-                                currentPage += 1
-                            }
+                            currentPage += 1
                         } else {
                             withAnimation(.spring(response: 0.4, dampingFraction: 0.85)) {
                                 hasSeenOnboarding = true
@@ -75,16 +79,23 @@ struct OnboardingView: View {
             }
         }
     }
+}
 
-    private func onboardingPage(pose: MascotPose, title: String, subtitle: String, description: String) -> some View {
+private struct OnboardingPageView: View {
+    let pose: MascotPose
+    let title: String
+    let subtitle: String
+    let description: String
+    let isVisible: Bool
+
+    var body: some View {
         VStack(spacing: 20) {
             Spacer()
 
             BubMascot(pose: pose, size: 200)
-                .scaleEffect(mascotAppeared ? 1 : 0.5)
-                .opacity(mascotAppeared ? 1 : 0)
-                .animation(.spring(response: 0.6, dampingFraction: 0.7), value: mascotAppeared)
-                .onAppear { mascotAppeared = true }
+                .scaleEffect(isVisible ? 1 : 0.5)
+                .opacity(isVisible ? 1 : 0)
+                .animation(.spring(response: 0.6, dampingFraction: 0.7), value: isVisible)
 
             VStack(spacing: 8) {
                 Text(title)
@@ -105,5 +116,6 @@ struct OnboardingView: View {
             Spacer()
             Spacer()
         }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
 }
