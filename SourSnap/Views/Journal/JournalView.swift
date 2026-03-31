@@ -4,18 +4,19 @@ import SwiftData
 struct JournalView: View {
     @Query(sort: \JournalEntry.date, order: .reverse) private var entries: [JournalEntry]
     @State private var selectedEntry: JournalEntry?
+    @State private var appearedCards: Set<Int> = []
 
     var body: some View {
         NavigationStack {
-            ZStack {
-                Color.appBackground.ignoresSafeArea()
-
+            Group {
                 if entries.isEmpty {
                     emptyState
                 } else {
                     journalList
                 }
             }
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .background(Color.appBackground.ignoresSafeArea())
             .navigationTitle("Journal")
             .navigationBarTitleDisplayMode(.large)
             .toolbarColorScheme(.light, for: .navigationBar)
@@ -44,13 +45,16 @@ struct JournalView: View {
             LazyVStack(spacing: 16) {
                 ForEach(Array(entries.enumerated()), id: \.element.persistentModelID) { index, entry in
                     JournalCardView(entry: entry)
-                        .opacity(1)
-                        .offset(y: 0)
+                        .opacity(appearedCards.contains(index) ? 1 : 0)
+                        .offset(y: appearedCards.contains(index) ? 0 : 20)
                         .animation(
                             .spring(response: 0.4, dampingFraction: 0.8)
-                            .delay(Double(index) * 0.08),
-                            value: entries.count
+                            .delay(Double(index) * 0.05),
+                            value: appearedCards.contains(index)
                         )
+                        .onAppear {
+                            appearedCards.insert(index)
+                        }
                         .onTapGesture {
                             HapticManager.light()
                             selectedEntry = entry

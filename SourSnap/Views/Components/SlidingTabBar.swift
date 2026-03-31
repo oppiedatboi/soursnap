@@ -15,12 +15,21 @@ enum AppTab: Int, CaseIterable {
         }
     }
 
-    var icon: String {
+    var iconFilled: String {
         switch self {
         case .journal: return "book.fill"
         case .snap: return "camera.fill"
         case .chat: return "bubble.left.and.bubble.right.fill"
         case .profile: return "person.fill"
+        }
+    }
+
+    var iconOutlined: String {
+        switch self {
+        case .journal: return "book"
+        case .snap: return "camera"
+        case .chat: return "bubble.left.and.bubble.right"
+        case .profile: return "person"
         }
     }
 }
@@ -35,11 +44,11 @@ struct SlidingTabBar: View {
                 tabButton(for: tab)
             }
         }
-        .padding(4)
-        .background(Color.appSurface)
+        .padding(6)
+        .background(.ultraThinMaterial)
         .clipShape(Capsule())
-        .shadow(color: Color.appTextPrimary.opacity(0.08), radius: 8, y: 4)
-        .padding(.horizontal, 24)
+        .shadow(color: Color.appTextPrimary.opacity(0.12), radius: 12, y: 6)
+        .padding(.horizontal, 20)
         .padding(.bottom, 8)
     }
 
@@ -50,16 +59,16 @@ struct SlidingTabBar: View {
                 selectedTab = tab
             }
         } label: {
-            VStack(spacing: 4) {
-                Image(systemName: tab.icon)
-                    .font(.system(size: tab == .snap ? 22 : 18, weight: .semibold))
+            VStack(spacing: 5) {
+                Image(systemName: selectedTab == tab ? tab.iconFilled : tab.iconOutlined)
+                    .font(.system(size: tab == .snap ? 26 : 22, weight: .semibold))
 
                 Text(tab.label)
-                    .font(.system(size: 10, weight: .semibold))
+                    .font(.system(size: 11, weight: .bold, design: .rounded))
             }
             .foregroundStyle(selectedTab == tab ? .white : Color.appTextSecondary)
             .frame(maxWidth: .infinity)
-            .padding(.vertical, 10)
+            .padding(.vertical, 12)
             .background {
                 if selectedTab == tab {
                     Capsule()

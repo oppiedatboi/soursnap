@@ -56,26 +56,37 @@ struct TabContainerView: View {
     var body: some View {
         ZStack {
             JournalView()
-                .opacity(selectedTab == .journal ? 1 : 0)
-                .offset(x: tabOffset(for: .journal))
+                .modifier(TabTransition(tab: .journal, selectedTab: selectedTab, dragOffset: dragOffset))
 
             SnapView()
-                .opacity(selectedTab == .snap ? 1 : 0)
-                .offset(x: tabOffset(for: .snap))
+                .modifier(TabTransition(tab: .snap, selectedTab: selectedTab, dragOffset: dragOffset))
 
             ChatView()
-                .opacity(selectedTab == .chat ? 1 : 0)
-                .offset(x: tabOffset(for: .chat))
+                .modifier(TabTransition(tab: .chat, selectedTab: selectedTab, dragOffset: dragOffset))
 
             ProfileView()
-                .opacity(selectedTab == .profile ? 1 : 0)
-                .offset(x: tabOffset(for: .profile))
+                .modifier(TabTransition(tab: .profile, selectedTab: selectedTab, dragOffset: dragOffset))
         }
-        .animation(.spring(response: 0.35, dampingFraction: 0.8), value: selectedTab)
+        .animation(.spring(response: 0.35, dampingFraction: 0.85), value: selectedTab)
+    }
+}
+
+private struct TabTransition: ViewModifier {
+    let tab: AppTab
+    let selectedTab: AppTab
+    let dragOffset: CGFloat
+
+    private var diff: CGFloat {
+        CGFloat(tab.rawValue - selectedTab.rawValue)
     }
 
-    private func tabOffset(for tab: AppTab) -> CGFloat {
-        let diff = CGFloat(tab.rawValue - selectedTab.rawValue)
-        return diff * UIScreen.main.bounds.width + (selectedTab == tab ? dragOffset * 0.3 : 0)
+    private var isSelected: Bool { tab == selectedTab }
+
+    func body(content: Content) -> some View {
+        content
+            .offset(x: diff * UIScreen.main.bounds.width + (isSelected ? dragOffset * 0.3 : 0))
+            .opacity(isSelected ? 1 : max(0, 1 - abs(diff) * 0.5))
+            .scaleEffect(isSelected ? 1 : 0.92)
+            .allowsHitTesting(isSelected)
     }
 }
