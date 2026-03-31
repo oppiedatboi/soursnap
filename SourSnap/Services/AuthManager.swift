@@ -7,29 +7,25 @@ import SwiftData
 final class AuthManager: NSObject {
     static let shared = AuthManager()
 
-    var isSignedIn: Bool {
-        get { UserDefaults.standard.bool(forKey: "isSignedIn") }
-        set { UserDefaults.standard.set(newValue, forKey: "isSignedIn") }
+    // Stored properties tracked by @Observable — synced to UserDefaults for persistence
+    var isSignedIn: Bool = UserDefaults.standard.bool(forKey: "isSignedIn") {
+        didSet { UserDefaults.standard.set(isSignedIn, forKey: "isSignedIn") }
     }
 
-    var didSkipSignIn: Bool {
-        get { UserDefaults.standard.bool(forKey: "didSkipSignIn") }
-        set { UserDefaults.standard.set(newValue, forKey: "didSkipSignIn") }
+    var didSkipSignIn: Bool = UserDefaults.standard.bool(forKey: "didSkipSignIn") {
+        didSet { UserDefaults.standard.set(didSkipSignIn, forKey: "didSkipSignIn") }
     }
 
-    var userIdentifier: String? {
-        get { UserDefaults.standard.string(forKey: "userIdentifier") }
-        set { UserDefaults.standard.set(newValue, forKey: "userIdentifier") }
+    var userIdentifier: String? = UserDefaults.standard.string(forKey: "userIdentifier") {
+        didSet { UserDefaults.standard.set(userIdentifier, forKey: "userIdentifier") }
     }
 
-    var userEmail: String? {
-        get { UserDefaults.standard.string(forKey: "userEmail") }
-        set { UserDefaults.standard.set(newValue, forKey: "userEmail") }
+    var userEmail: String? = UserDefaults.standard.string(forKey: "userEmail") {
+        didSet { UserDefaults.standard.set(userEmail, forKey: "userEmail") }
     }
 
-    var userDisplayName: String? {
-        get { UserDefaults.standard.string(forKey: "userDisplayName") }
-        set { UserDefaults.standard.set(newValue, forKey: "userDisplayName") }
+    var userDisplayName: String? = UserDefaults.standard.string(forKey: "userDisplayName") {
+        didSet { UserDefaults.standard.set(userDisplayName, forKey: "userDisplayName") }
     }
 
     var isAuthenticated: Bool {
