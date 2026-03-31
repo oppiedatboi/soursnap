@@ -15,6 +15,7 @@ struct ProgressView: View {
 
                 ScrollView {
                     VStack(spacing: 24) {
+                        journeyHeader
                         phaseTimeline
                         milestonesSection
                     }
@@ -37,6 +38,24 @@ struct ProgressView: View {
                 }
             }
         }
+    }
+
+    // MARK: - Header
+
+    private var journeyHeader: some View {
+        VStack(spacing: 10) {
+            BubMascot(pose: currentDay > 30 ? .celebrating : currentDay > 7 ? .bubbly : .hero, size: 100)
+
+            Text("Day \(currentDay)")
+                .font(.system(size: 32, weight: .bold, design: .rounded))
+                .foregroundStyle(Color.appPrimary)
+
+            Text(phases[currentPhaseIndex].name)
+                .font(.system(size: 15, weight: .medium, design: .rounded))
+                .foregroundStyle(Color.appTextSecondary)
+        }
+        .frame(maxWidth: .infinity)
+        .padding(.vertical, 8)
     }
 
     // MARK: - Journey Phases
