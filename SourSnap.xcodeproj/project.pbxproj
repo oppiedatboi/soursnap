@@ -18,7 +18,9 @@
 		24D942451386E90E8B427A3F /* FeedingLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA68E737C048199831633880 /* FeedingLog.swift */; };
 		2CF73702D6A157EEE14DE0EB /* Secrets.swift in Sources */ = {isa = PBXBuildFile; fileRef = E12FA88169E3EC8986CDF2D6 /* Secrets.swift */; };
 		36266AD06173FC596971B8B1 /* SlidingTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D2786A12F3766E3BB03D311 /* SlidingTabBar.swift */; };
+		523318663EFE42766772D3FA /* UserProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D18CD4096A8F7CEA36D9452 /* UserProfile.swift */; };
 		696AEF58D87E3020E5969AD6 /* JournalEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18B7F0604EBAA63054FF5EE3 /* JournalEntry.swift */; };
+		6E263D22893BEACD335EB32C /* PhotoStorageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C460C79E0B72520712AD6F3 /* PhotoStorageManager.swift */; };
 		727E9027C9B4BFD9D086B2F0 /* Config.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88C2E9E1995004F5497263BC /* Config.swift */; };
 		754DE0AA9B5DFDAD6AB74412 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 735B65249F2A938195993FCA /* ContentView.swift */; };
 		82812445CCAB36556DDD995F /* StarterProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB66377A2BE44E31E8C324EE /* StarterProfile.swift */; };
@@ -36,8 +38,10 @@
 		0D45996D6CED155664A84D9E /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
 		18B7F0604EBAA63054FF5EE3 /* JournalEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JournalEntry.swift; sourceTree = "<group>"; };
 		19F70B90B91F574F8C1DDED1 /* ChatMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatMessage.swift; sourceTree = "<group>"; };
+		2D18CD4096A8F7CEA36D9452 /* UserProfile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfile.swift; sourceTree = "<group>"; };
 		2D2786A12F3766E3BB03D311 /* SlidingTabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SlidingTabBar.swift; sourceTree = "<group>"; };
 		3A808320226016D2A30FBD69 /* SourSnapApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SourSnapApp.swift; sourceTree = "<group>"; };
+		5C460C79E0B72520712AD6F3 /* PhotoStorageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoStorageManager.swift; sourceTree = "<group>"; };
 		735B65249F2A938195993FCA /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		7A4A69559DA0882E95C3233A /* AnalysisCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalysisCardView.swift; sourceTree = "<group>"; };
 		7EF3DA6AB6B61E0253D6ECA7 /* CameraView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraView.swift; sourceTree = "<group>"; };
@@ -98,6 +102,7 @@
 				FA68E737C048199831633880 /* FeedingLog.swift */,
 				18B7F0604EBAA63054FF5EE3 /* JournalEntry.swift */,
 				BB66377A2BE44E31E8C324EE /* StarterProfile.swift */,
+				2D18CD4096A8F7CEA36D9452 /* UserProfile.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -126,6 +131,7 @@
 			children = (
 				7FD644911A24B4F1EA44E7DE /* HapticManager.swift */,
 				DB9107F81E14E572EEB29780 /* OpenAIService.swift */,
+				5C460C79E0B72520712AD6F3 /* PhotoStorageManager.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -271,6 +277,7 @@
 				0F017949B87DED29755FE102 /* JournalView.swift in Sources */,
 				C284A3D475C650583951029B /* OnboardingView.swift in Sources */,
 				9D420E2A0E86EFC4887D4B88 /* OpenAIService.swift in Sources */,
+				6E263D22893BEACD335EB32C /* PhotoStorageManager.swift in Sources */,
 				0B8575175567D4BEF7C7212B /* ProfileView.swift in Sources */,
 				2CF73702D6A157EEE14DE0EB /* Secrets.swift in Sources */,
 				1ED40AEB9723DF660B2938A9 /* ShimmerEffect.swift in Sources */,
@@ -278,6 +285,7 @@
 				0FC309C70CABCB494F9343C3 /* SnapView.swift in Sources */,
 				A7A885F2C81F510835F01437 /* SourSnapApp.swift in Sources */,
 				82812445CCAB36556DDD995F /* StarterProfile.swift in Sources */,
+				523318663EFE42766772D3FA /* UserProfile.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

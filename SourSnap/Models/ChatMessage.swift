@@ -3,15 +3,19 @@ import SwiftData
 
 @Model
 final class ChatMessage {
+    var id: UUID = UUID()
     var role: String
     var content: String
-    var timestamp: Date
+    var imagePhotoPath: String?
+    var createdAt: Date
     var starterProfile: StarterProfile?
 
-    init(role: String, content: String, timestamp: Date = .now) {
+    init(role: String, content: String, imagePhotoPath: String? = nil, createdAt: Date = .now) {
+        self.id = UUID()
         self.role = role
         self.content = content
-        self.timestamp = timestamp
+        self.imagePhotoPath = imagePhotoPath
+        self.createdAt = createdAt
     }
 
     var isUser: Bool { role == "user" }

@@ -3,7 +3,7 @@ import SwiftData
 
 struct ChatView: View {
     @Environment(\.modelContext) private var modelContext
-    @Query(sort: \ChatMessage.timestamp) private var messages: [ChatMessage]
+    @Query(sort: \ChatMessage.createdAt) private var messages: [ChatMessage]
     @Query private var profiles: [StarterProfile]
 
     @State private var inputText = ""
