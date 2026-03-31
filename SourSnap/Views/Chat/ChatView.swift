@@ -48,7 +48,7 @@ struct ChatView: View {
                     inputBar
                 }
             }
-            .navigationTitle("Chat with Bub")
+            .navigationTitle("Chat with Kiko")
             .navigationBarTitleDisplayMode(.large)
             .sheet(isPresented: $showPaywall) {
                 PaywallView()
@@ -63,10 +63,10 @@ struct ChatView: View {
             VStack(spacing: 24) {
                 Spacer().frame(height: 20)
 
-                BubMascot(pose: .hero, size: 160)
+                KikoMascot(pose: .hero, size: 160)
 
                 VStack(spacing: 8) {
-                    Text("Hey! I'm Bub, your sourdough buddy")
+                    Text("Hey! I'm Kiko, your sourdough buddy")
                         .font(.system(size: 20, weight: .semibold, design: .rounded))
                         .foregroundStyle(Color.appTextPrimary)
                         .multilineTextAlignment(.center)
@@ -145,7 +145,7 @@ struct ChatView: View {
 
     private var typingIndicator: some View {
         HStack(spacing: 12) {
-            BubMascot(pose: .thinking, size: 36)
+            KikoMascot(pose: .thinking, size: 36)
 
             HStack(spacing: 6) {
                 ForEach(0..<3, id: \.self) { i in
@@ -181,7 +181,7 @@ struct ChatView: View {
 
     private var inputBar: some View {
         HStack(spacing: 12) {
-            TextField("Ask Bub anything...", text: $inputText, axis: .vertical)
+            TextField("Ask Kiko anything...", text: $inputText, axis: .vertical)
                 .font(.system(size: 16, design: .rounded))
                 .padding(.horizontal, 16)
                 .padding(.vertical, 10)
@@ -270,7 +270,7 @@ struct ChatBubbleView: View {
     var body: some View {
         HStack(alignment: .top, spacing: 8) {
             if message.isAssistant {
-                BubMascot(pose: .thinking, size: 32)
+                KikoMascot(pose: .thinking, size: 32)
             }
 
             if message.isUser { Spacer(minLength: 60) }

@@ -84,7 +84,7 @@ struct JournalEntryDetailView: View {
                     // Encouragement
                     if !entry.encouragement.isEmpty {
                         HStack(spacing: 12) {
-                            BubMascot(pose: .celebrating, size: 48)
+                            KikoMascot(pose: .celebrating, size: 48)
                             Text(entry.encouragement)
                                 .font(.system(size: 15, weight: .medium, design: .rounded))
                                 .foregroundStyle(Color.appPrimary)
@@ -133,7 +133,7 @@ struct JournalEntryDetailView: View {
             }
             .sheet(isPresented: $showingShareSheet) {
                 if let shareImage {
-                    let deepLink = "Check out my starter on Kibo! https://kiboapp.com/s/\(entry.id.uuidString)"
+                    let deepLink = "Check out my starter on Kiko Dough! https://kiboapp.com/s/\(entry.id.uuidString)"
                     ShareSheet(items: [shareImage, deepLink])
                 }
             }
@@ -151,14 +151,14 @@ struct JournalEntryDetailView: View {
     private func generateAndShare() {
         let starterName = entry.starterProfile?.name ?? "My Starter"
         let daysOld = entry.starterProfile?.daysSinceBorn ?? 0
-        let bubImage = UIImage(named: MascotPose.celebrating.rawValue)
+        let kikoImage = UIImage(named: MascotPose.celebrating.rawValue)
 
         shareImage = ShareCardRenderer.render(
             starterPhoto: fullImage,
             starterName: starterName,
             daysOld: daysOld,
             healthScore: entry.healthScore,
-            bubMascotImage: bubImage
+            kikoMascotImage: kikoImage
         )
         showingShareSheet = true
     }

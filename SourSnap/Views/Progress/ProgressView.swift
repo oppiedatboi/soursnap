@@ -44,7 +44,7 @@ struct ProgressView: View {
 
     private var journeyHeader: some View {
         VStack(spacing: 10) {
-            BubMascot(pose: currentDay > 30 ? .celebrating : currentDay > 7 ? .bubbly : .hero, size: 100)
+            KikoMascot(pose: currentDay > 30 ? .celebrating : currentDay > 7 ? .bubbly : .hero, size: 100)
 
             Text("Day \(currentDay)")
                 .font(.system(size: 32, weight: .bold, design: .rounded))

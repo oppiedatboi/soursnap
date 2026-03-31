@@ -93,7 +93,7 @@ struct ProfileView: View {
 
     private var createProfilePrompt: some View {
         VStack(spacing: 24) {
-            BubMascot(pose: .hero, size: 180)
+            KikoMascot(pose: .hero, size: 180)
 
             Text("Let's name your starter!")
                 .font(.system(size: 24, weight: .bold, design: .rounded))
@@ -169,11 +169,11 @@ struct ProfileView: View {
     private func mascotHeader(_ profile: StarterProfile) -> some View {
         VStack(spacing: 12) {
             if currentStreak > 7 {
-                BubMascot(pose: .celebrating, size: 120)
+                KikoMascot(pose: .celebrating, size: 120)
             } else if entries.count > 5 {
-                BubMascot(pose: .bubbly, size: 120)
+                KikoMascot(pose: .bubbly, size: 120)
             } else {
-                BubMascot(pose: .hero, size: 120)
+                KikoMascot(pose: .hero, size: 120)
             }
 
             Text(profile.name)
@@ -588,9 +588,9 @@ struct ProfileView: View {
                     .rotationEffect(.degrees(piece.rotation))
             }
 
-            // Celebrating Bub
+            // Celebrating Kiko
             VStack(spacing: 16) {
-                BubMascot(pose: .celebrating, size: 200)
+                KikoMascot(pose: .celebrating, size: 200)
                     .scaleEffect(showCelebration ? 1.0 : 0.5)
 
                 Text("Welcome to the family! 🎉")
@@ -686,7 +686,7 @@ struct CreateProfileSheet: View {
 
                 ScrollView {
                     VStack(spacing: 24) {
-                        BubMascot(pose: .hero, size: 100)
+                        KikoMascot(pose: .hero, size: 100)
 
                         VStack(spacing: 16) {
                             formField(title: "Starter Name") {
@@ -787,7 +787,7 @@ struct FeedingSheet: View {
 
                 ScrollView {
                     VStack(spacing: 24) {
-                        BubMascot(pose: .jar, size: 100)
+                        KikoMascot(pose: .jar, size: 100)
 
                         Text("Log a feeding for \(profile.name)")
                             .font(.system(size: 18, weight: .semibold, design: .rounded))
@@ -919,7 +919,7 @@ struct EditProfileSheet: View {
 
                 ScrollView {
                     VStack(spacing: 24) {
-                        BubMascot(pose: .jar, size: 80)
+                        KikoMascot(pose: .jar, size: 80)
 
                         Text("Edit \(profile.name)")
                             .font(.system(size: 18, weight: .semibold, design: .rounded))

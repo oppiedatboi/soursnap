@@ -1,17 +1,17 @@
 import SwiftUI
 
 enum MascotPose: String, CaseIterable {
-    case hero = "bub-hero"
-    case jar = "bub-jar"
-    case snap = "bub-snap"
-    case celebrating = "bub-celebrating"
-    case sleeping = "bub-sleeping"
-    case sad = "bub-sad"
-    case bubbly = "bub-bubbly"
-    case thinking = "bub-thinking"
+    case hero = "kiko-hero"
+    case jar = "kiko-jar"
+    case snap = "kiko-snap"
+    case celebrating = "kiko-celebrating"
+    case sleeping = "kiko-sleeping"
+    case sad = "kiko-sad"
+    case bubbly = "kiko-bubbly"
+    case thinking = "kiko-thinking"
 }
 
-struct BubMascot: View {
+struct KikoMascot: View {
     let pose: MascotPose
     var size: CGFloat = 160
 

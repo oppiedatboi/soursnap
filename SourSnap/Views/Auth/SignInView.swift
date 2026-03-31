@@ -19,12 +19,12 @@ struct SignInView: View {
 
                 // Hero section
                 VStack(spacing: 20) {
-                    BubMascot(pose: .hero, size: 200)
+                    KikoMascot(pose: .hero, size: 200)
                         .opacity(appeared ? 1 : 0)
                         .offset(y: appeared ? 0 : 30)
 
                     VStack(spacing: 8) {
-                        Text("Welcome to Kibo")
+                        Text("Welcome to Kiko Dough")
                             .font(.system(size: 32, weight: .bold, design: .rounded))
                             .foregroundStyle(Color.appTextPrimary)
 
@@ -41,7 +41,7 @@ struct SignInView: View {
                 // Features preview
                 VStack(spacing: 14) {
                     featureRow(icon: "camera.fill", title: "Snap & Analyze", description: "AI-powered starter health checks")
-                    featureRow(icon: "bubble.left.and.bubble.right.fill", title: "Chat with Bub", description: "Your personal sourdough advisor")
+                    featureRow(icon: "bubble.left.and.bubble.right.fill", title: "Chat with Kiko", description: "Your personal sourdough advisor")
                     featureRow(icon: "chart.line.uptrend.xyaxis", title: "Track Progress", description: "Watch your starter grow over time")
                 }
                 .padding(.horizontal, 32)

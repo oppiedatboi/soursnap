@@ -68,11 +68,11 @@ struct PaywallView: View {
 
     private var heroSection: some View {
         VStack(spacing: 14) {
-            BubMascot(pose: .celebrating, size: 140)
+            KikoMascot(pose: .celebrating, size: 140)
                 .scaleEffect(appeared ? 1.0 : 0.7)
                 .opacity(appeared ? 1 : 0)
 
-            Text("Unlock the Full Kibo Experience")
+            Text("Unlock the Full Kiko Dough Experience")
                 .font(.system(size: 22, weight: .bold, design: .rounded))
                 .foregroundStyle(Color.appTextPrimary)
                 .multilineTextAlignment(.center)
