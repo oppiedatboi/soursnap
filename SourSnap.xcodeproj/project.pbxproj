@@ -36,6 +36,7 @@
 		D1D3EDDB49524DD3110B27D6 /* AppColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = F30803957622BA586F169B81 /* AppColors.swift */; };
 		D94542ECE9983016F8CDC92C /* ChatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CCC98F2E06E5EAA7989112B /* ChatView.swift */; };
 		E5B56E19FEDCD4ADEBFB7CE0 /* CameraView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EF3DA6AB6B61E0253D6ECA7 /* CameraView.swift */; };
+		F603D864D2E96B0C18C84307 /* PaywallView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD0F123D49B35671267057AE /* PaywallView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -68,6 +69,7 @@
 		E6728ED8DF0683B40CAA4E2B /* ShimmerEffect.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShimmerEffect.swift; sourceTree = "<group>"; };
 		F30803957622BA586F169B81 /* AppColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppColors.swift; sourceTree = "<group>"; };
 		FA68E737C048199831633880 /* FeedingLog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedingLog.swift; sourceTree = "<group>"; };
+		FD0F123D49B35671267057AE /* PaywallView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaywallView.swift; sourceTree = "<group>"; };
 		FE9A1862B12AD5085AAACC62 /* JournalEntryDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JournalEntryDetailView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -142,6 +144,14 @@
 			path = Journal;
 			sourceTree = "<group>";
 		};
+		60A74DB4A4F9A60D64B70116 /* Paywall */ = {
+			isa = PBXGroup;
+			children = (
+				FD0F123D49B35671267057AE /* PaywallView.swift */,
+			);
+			path = Paywall;
+			sourceTree = "<group>";
+		};
 		68EFB5336DF2C6FFCF0AA92C /* Services */ = {
 			isa = PBXGroup;
 			children = (
@@ -213,6 +223,7 @@
 				518522DC65856F9FFD56B6DE /* Components */,
 				54C2C39BF2CCC5F468D8CD77 /* Journal */,
 				BD75D04777DA71CB8EDE7F7C /* Onboarding */,
+				60A74DB4A4F9A60D64B70116 /* Paywall */,
 				05A81443AD860062ECE2B4FF /* Profile */,
 				28D013EBA4AE5E0F8C4F1737 /* Progress */,
 				B6A56662C2D56217E0A99621 /* Snap */,
@@ -306,6 +317,7 @@
 				0F017949B87DED29755FE102 /* JournalView.swift in Sources */,
 				C284A3D475C650583951029B /* OnboardingView.swift in Sources */,
 				9D420E2A0E86EFC4887D4B88 /* OpenAIService.swift in Sources */,
+				F603D864D2E96B0C18C84307 /* PaywallView.swift in Sources */,
 				6E263D22893BEACD335EB32C /* PhotoStorageManager.swift in Sources */,
 				0B8575175567D4BEF7C7212B /* ProfileView.swift in Sources */,
 				D04FC7FC352927CDB643427B /* ProgressView.swift in Sources */,

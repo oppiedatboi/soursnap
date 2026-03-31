@@ -5,10 +5,25 @@ struct ChatView: View {
     @Environment(\.modelContext) private var modelContext
     @Query(sort: \ChatMessage.createdAt) private var messages: [ChatMessage]
     @Query private var profiles: [StarterProfile]
+    @Query private var userProfiles: [UserProfile]
 
     @State private var inputText = ""
     @State private var isTyping = false
+    @State private var showPaywall = false
     @FocusState private var isFocused: Bool
+
+    private var isProUser: Bool {
+        userProfiles.first?.isPro ?? false
+    }
+
+    private var todayUserMessageCount: Int {
+        let startOfDay = Calendar.current.startOfDay(for: .now)
+        return messages.filter { $0.role == "user" && $0.createdAt >= startOfDay }.count
+    }
+
+    private var hasReachedDailyChatLimit: Bool {
+        !isProUser && todayUserMessageCount >= 5
+    }
 
     private let suggestedQuestions = [
         "My starter smells weird",
@@ -35,6 +50,9 @@ struct ChatView: View {
             }
             .navigationTitle("Chat with Bub")
             .navigationBarTitleDisplayMode(.large)
+            .sheet(isPresented: $showPaywall) {
+                PaywallView()
+            }
         }
     }
 
@@ -196,6 +214,13 @@ struct ChatView: View {
     private func sendCurrentMessage() {
         let text = inputText.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !text.isEmpty else { return }
+
+        if hasReachedDailyChatLimit {
+            HapticManager.warning()
+            showPaywall = true
+            return
+        }
+
         inputText = ""
         HapticManager.medium()
         sendMessage(text)
