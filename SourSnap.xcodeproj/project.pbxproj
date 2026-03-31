@@ -18,6 +18,7 @@
 		24D942451386E90E8B427A3F /* FeedingLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA68E737C048199831633880 /* FeedingLog.swift */; };
 		2CF73702D6A157EEE14DE0EB /* Secrets.swift in Sources */ = {isa = PBXBuildFile; fileRef = E12FA88169E3EC8986CDF2D6 /* Secrets.swift */; };
 		36266AD06173FC596971B8B1 /* SlidingTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D2786A12F3766E3BB03D311 /* SlidingTabBar.swift */; };
+		523318663EFE42766772D3FA /* UserProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D18CD4096A8F7CEA36D9452 /* UserProfile.swift */; };
 		696AEF58D87E3020E5969AD6 /* JournalEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18B7F0604EBAA63054FF5EE3 /* JournalEntry.swift */; };
 		727E9027C9B4BFD9D086B2F0 /* Config.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88C2E9E1995004F5497263BC /* Config.swift */; };
 		754DE0AA9B5DFDAD6AB74412 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 735B65249F2A938195993FCA /* ContentView.swift */; };
@@ -36,6 +37,7 @@
 		0D45996D6CED155664A84D9E /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
 		18B7F0604EBAA63054FF5EE3 /* JournalEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JournalEntry.swift; sourceTree = "<group>"; };
 		19F70B90B91F574F8C1DDED1 /* ChatMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatMessage.swift; sourceTree = "<group>"; };
+		2D18CD4096A8F7CEA36D9452 /* UserProfile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfile.swift; sourceTree = "<group>"; };
 		2D2786A12F3766E3BB03D311 /* SlidingTabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SlidingTabBar.swift; sourceTree = "<group>"; };
 		3A808320226016D2A30FBD69 /* SourSnapApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SourSnapApp.swift; sourceTree = "<group>"; };
 		735B65249F2A938195993FCA /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -98,6 +100,7 @@
 				FA68E737C048199831633880 /* FeedingLog.swift */,
 				18B7F0604EBAA63054FF5EE3 /* JournalEntry.swift */,
 				BB66377A2BE44E31E8C324EE /* StarterProfile.swift */,
+				2D18CD4096A8F7CEA36D9452 /* UserProfile.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -278,6 +281,7 @@
 				0FC309C70CABCB494F9343C3 /* SnapView.swift in Sources */,
 				A7A885F2C81F510835F01437 /* SourSnapApp.swift in Sources */,
 				82812445CCAB36556DDD995F /* StarterProfile.swift in Sources */,
+				523318663EFE42766772D3FA /* UserProfile.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

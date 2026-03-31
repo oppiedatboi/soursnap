@@ -71,8 +71,8 @@ struct JournalEntryDetailView: View {
                     }
 
                     // Notes
-                    if !entry.notes.isEmpty {
-                        infoCard(title: "Notes", content: entry.notes, icon: "note.text")
+                    if !entry.userNotes.isEmpty {
+                        infoCard(title: "Notes", content: entry.userNotes, icon: "note.text")
                             .opacity(appeared ? 1 : 0)
                             .offset(y: appeared ? 0 : 20)
                     }

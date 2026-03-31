@@ -12,7 +12,8 @@ struct SourSnapApp: App {
             StarterProfile.self,
             JournalEntry.self,
             ChatMessage.self,
-            FeedingLog.self
+            FeedingLog.self,
+            UserProfile.self
         ])
     }
 }

@@ -243,9 +243,9 @@ struct SnapView: View {
     private func saveToJournal(_ result: OpenAIService.AnalysisResult) {
         let entry = JournalEntry(
             photo: capturedImage?.jpegData(compressionQuality: 0.8),
+            colorAssessment: result.colorAssessment,
             bubbleActivity: result.bubbleActivity,
             riseLevel: result.riseLevel,
-            colorAssessment: result.colorAssessment,
             overallHealth: result.overallHealth,
             guidance: result.guidance,
             encouragement: result.encouragement
