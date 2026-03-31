@@ -1,0 +1,34 @@
+appId: com.kiboapp.SourSnap
+name: "Snap Photo — navigate to Snap tab and attempt to take a photo"
+tags:
+  - requires-permissions
+
+---
+
+- launchApp
+
+# Navigate to Snap tab
+- tapOn: "Snap"
+
+# Verify we see the snap prompt
+- assertVisible: "Time for a snap!"
+- assertVisible:
+    text: "Take a photo of your starter and Bub will analyze it for you"
+
+# Tap Take Photo — this opens the camera (will show permission dialog on real device)
+- tapOn: "Take Photo"
+
+# On simulator the camera isn't available, so dismiss any dialog or sheet
+- runFlow:
+    when:
+      visible: "OK"
+    commands:
+      - tapOn: "OK"
+
+# Alternatively test the photo picker path
+- tapOn: "Snap"
+- assertVisible: "Time for a snap!"
+- tapOn: "Choose from Library"
+
+# Dismiss the picker to return to the snap view
+- pressKey: Escape
