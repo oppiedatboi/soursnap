@@ -10,6 +10,8 @@ struct ProfileView: View {
     @State private var showingCreateProfile = false
     @State private var showingFeedingSheet = false
     @State private var appeared = false
+    @State private var showCelebration = false
+    @State private var confettiPieces: [ConfettiPiece] = []
 
     private var profile: StarterProfile? { profiles.first }
 
@@ -23,10 +25,19 @@ struct ProfileView: View {
                 } else {
                     createProfilePrompt
                 }
+
+                // Celebration overlay
+                if showCelebration {
+                    celebrationOverlay
+                }
             }
             .navigationTitle("Profile")
             .navigationBarTitleDisplayMode(.large)
-            .sheet(isPresented: $showingCreateProfile) {
+            .sheet(isPresented: $showingCreateProfile, onDismiss: {
+                if profile != nil {
+                    triggerCelebration()
+                }
+            }) {
                 CreateProfileSheet()
             }
             .sheet(isPresented: $showingFeedingSheet) {
@@ -186,6 +197,70 @@ struct ProfileView: View {
                     .frame(maxWidth: .infinity)
                     .padding(.vertical, 14)
                     .background(Color.appPrimary, in: Capsule())
+            }
+        }
+    }
+
+    // MARK: - Celebration
+
+    private var celebrationOverlay: some View {
+        ZStack {
+            // Confetti particles
+            ForEach(confettiPieces) { piece in
+                Circle()
+                    .fill(piece.color)
+                    .frame(width: piece.size, height: piece.size)
+                    .offset(x: piece.x, y: piece.y)
+                    .opacity(piece.opacity)
+                    .rotationEffect(.degrees(piece.rotation))
+            }
+
+            // Celebrating Bub
+            VStack(spacing: 16) {
+                BubMascot(pose: .celebrating, size: 200)
+                    .scaleEffect(showCelebration ? 1.0 : 0.5)
+
+                Text("Welcome to the family! 🎉")
+                    .font(.system(size: 22, weight: .bold, design: .rounded))
+                    .foregroundStyle(Color.appTextPrimary)
+                    .opacity(showCelebration ? 1 : 0)
+            }
+        }
+        .allowsHitTesting(false)
+    }
+
+    private func triggerCelebration() {
+        HapticManager.success()
+        confettiPieces = (0..<40).map { _ in
+            ConfettiPiece(
+                x: CGFloat.random(in: -180...180),
+                y: CGFloat.random(in: -400...(-50)),
+                size: CGFloat.random(in: 6...12),
+                color: [Color.appPrimary, Color.appSuccess, Color.appWarning, Color.appSecondary, Color.appAlert].randomElement()!,
+                rotation: Double.random(in: 0...360),
+                opacity: 1.0
+            )
+        }
+
+        withAnimation(.spring(response: 0.5, dampingFraction: 0.7)) {
+            showCelebration = true
+        }
+
+        // Animate confetti falling
+        withAnimation(.easeIn(duration: 2.0)) {
+            confettiPieces = confettiPieces.map { piece in
+                var p = piece
+                p.y = CGFloat.random(in: 200...500)
+                p.rotation += Double.random(in: 180...720)
+                p.opacity = 0
+                return p
+            }
+        }
+
+        // Dismiss celebration
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2.5) {
+            withAnimation(.easeOut(duration: 0.5)) {
+                showCelebration = false
             }
         }
     }
@@ -424,4 +499,16 @@ struct FeedingSheet: View {
             content()
         }
     }
+}
+
+// MARK: - Confetti Model
+
+struct ConfettiPiece: Identifiable {
+    let id = UUID()
+    var x: CGFloat
+    var y: CGFloat
+    var size: CGFloat
+    var color: Color
+    var rotation: Double
+    var opacity: Double
 }
