@@ -147,6 +147,7 @@ struct ProfileView: View {
             withAnimation(.spring(response: 0.5, dampingFraction: 0.8)) {
                 appeared = true
             }
+            updateWidgetData(profile)
         }
     }
 
@@ -418,6 +419,23 @@ struct ProfileView: View {
 
             Divider()
         }
+    }
+
+    // MARK: - Widget Data
+
+    private func updateWidgetData(_ profile: StarterProfile) {
+        let lastEntry = entries
+            .filter { $0.starterProfile?.id == profile.id }
+            .sorted { $0.date > $1.date }
+            .first
+
+        WidgetDataManager.update(
+            starterName: profile.name,
+            daysOld: profile.daysSinceBorn,
+            currentStreak: feedingStreak,
+            lastHealthScore: lastEntry?.healthScore,
+            lastSnapDate: lastEntry?.date
+        )
     }
 
     // MARK: - Settings
@@ -747,6 +765,13 @@ struct FeedingSheet: View {
                             )
                             log.starterProfile = profile
                             modelContext.insert(log)
+                            WidgetDataManager.update(
+                                starterName: profile.name,
+                                daysOld: profile.daysSinceBorn,
+                                currentStreak: 0,
+                                lastHealthScore: nil,
+                                lastSnapDate: nil
+                            )
                             dismiss()
                         } label: {
                             Label("Log Feeding", systemImage: "checkmark.circle.fill")

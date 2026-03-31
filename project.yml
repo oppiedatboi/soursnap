@@ -44,3 +44,23 @@ targets:
         SWIFT_EMIT_LOC_STRINGS: YES
         ENABLE_PREVIEWS: YES
         SWIFT_VERSION: "6.0"
+    dependencies:
+      - target: KiboWidgetExtension
+        embed: true
+
+  KiboWidgetExtension:
+    type: app-extension
+    platform: iOS
+    sources:
+      - path: KiboWidget
+    settings:
+      base:
+        GENERATE_INFOPLIST_FILE: YES
+        INFOPLIST_KEY_CFBundleDisplayName: Kibo Widget
+        INFOPLIST_KEY_NSHumanReadableCopyright: ""
+        PRODUCT_BUNDLE_IDENTIFIER: com.soursnap.app.kibo-widget
+        PRODUCT_NAME: KiboWidgetExtension
+        SWIFT_EMIT_LOC_STRINGS: YES
+        SWIFT_VERSION: "6.0"
+        ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME: AccentColor
+        ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME: WidgetBackground
