@@ -84,28 +84,43 @@ struct JournalView: View {
 
 struct JournalCardView: View {
     let entry: JournalEntry
+    @State private var thumbnail: UIImage?
     @State private var dragOffset: CGSize = .zero
 
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
             HStack(spacing: 12) {
-                // Photo thumbnail
-                if let photoData = entry.photo, let uiImage = UIImage(data: photoData) {
-                    Image(uiImage: uiImage)
+                // Photo thumbnail — prefer photoPath, fall back to legacy photo Data
+                if let thumb = thumbnail {
+                    Image(uiImage: thumb)
                         .resizable()
                         .aspectRatio(contentMode: .fill)
                         .frame(width: 72, height: 72)
                         .clipShape(RoundedRectangle(cornerRadius: 12))
+                } else {
+                    RoundedRectangle(cornerRadius: 12)
+                        .fill(Color.appSurface)
+                        .frame(width: 72, height: 72)
+                        .overlay(
+                            Image(systemName: "photo")
+                                .font(.system(size: 24))
+                                .foregroundStyle(Color.appBorder)
+                        )
                 }
 
-                VStack(alignment: .leading, spacing: 4) {
+                VStack(alignment: .leading, spacing: 6) {
                     Text(entry.date.formatted(.dateTime.month(.wide).day().year()))
                         .font(.system(size: 14, weight: .semibold, design: .rounded))
                         .foregroundStyle(Color.appTextPrimary)
 
-                    HStack(spacing: 12) {
-                        ratingBadge(label: "Bubbles", value: entry.bubbleActivity, icon: "circle.circle")
-                        ratingBadge(label: "Rise", value: entry.riseLevel, icon: "arrow.up.circle")
+                    // Health score badge
+                    if let score = entry.healthScore {
+                        healthScoreBadge(score)
+                    } else if entry.bubbleActivity > 0 || entry.riseLevel > 0 {
+                        HStack(spacing: 12) {
+                            ratingBadge(label: "Bubbles", value: entry.bubbleActivity, icon: "circle.circle")
+                            ratingBadge(label: "Rise", value: entry.riseLevel, icon: "arrow.up.circle")
+                        }
                     }
                 }
 
@@ -116,8 +131,9 @@ struct JournalCardView: View {
                     .foregroundStyle(Color.appBorder)
             }
 
-            if !entry.overallHealth.isEmpty {
-                Text(entry.overallHealth)
+            // Snippet: prefer aiAnalysis, then overallHealth, then userNotes
+            if let snippet = entrySnippet {
+                Text(snippet)
                     .font(.system(size: 14, design: .rounded))
                     .foregroundStyle(Color.appTextSecondary)
                     .lineLimit(2)
@@ -148,6 +164,48 @@ struct JournalCardView: View {
                     }
                 }
         )
+        .task {
+            loadThumbnail()
+        }
+    }
+
+    private var entrySnippet: String? {
+        if let analysis = entry.aiAnalysis, !analysis.isEmpty { return analysis }
+        if !entry.overallHealth.isEmpty { return entry.overallHealth }
+        if !entry.userNotes.isEmpty { return entry.userNotes }
+        return nil
+    }
+
+    private func loadThumbnail() {
+        // Prefer thumbnailPath from PhotoStorageManager
+        if let thumbPath = entry.thumbnailPath,
+           let img = PhotoStorageManager.shared.loadImage(path: thumbPath) {
+            thumbnail = img
+            return
+        }
+        // Fall back to photoPath
+        if let photoPath = entry.photoPath,
+           let img = PhotoStorageManager.shared.loadImage(path: photoPath) {
+            thumbnail = img
+            return
+        }
+        // Fall back to legacy photo Data blob
+        if let photoData = entry.photo, let img = UIImage(data: photoData) {
+            thumbnail = img
+        }
+    }
+
+    private func healthScoreBadge(_ score: Double) -> some View {
+        HStack(spacing: 6) {
+            Image(systemName: "heart.fill")
+                .font(.system(size: 12, weight: .semibold))
+            Text("\(Int(score))%")
+                .font(.system(size: 14, weight: .bold, design: .rounded))
+        }
+        .foregroundStyle(healthColor(score))
+        .padding(.horizontal, 10)
+        .padding(.vertical, 4)
+        .background(healthColor(score).opacity(0.12), in: Capsule())
     }
 
     private func ratingBadge(label: String, value: Int, icon: String) -> some View {
@@ -158,5 +216,11 @@ struct JournalCardView: View {
                 .font(.system(size: 13, weight: .bold, design: .rounded))
         }
         .foregroundStyle(value >= 4 ? Color.appSuccess : value >= 2 ? Color.appWarning : Color.appAlert)
+    }
+
+    private func healthColor(_ score: Double) -> Color {
+        if score >= 70 { return .appSuccess }
+        if score >= 40 { return .appWarning }
+        return .appAlert
     }
 }

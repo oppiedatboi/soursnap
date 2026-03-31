@@ -4,14 +4,13 @@ import SwiftData
 struct SnapView: View {
     @Environment(\.modelContext) private var modelContext
     @Query private var profiles: [StarterProfile]
+    @Binding var selectedTab: AppTab
 
     @State private var capturedImage: UIImage?
     @State private var showCamera = false
     @State private var showPhotoPicker = false
     @State private var isAnalyzing = false
-    @State private var analysisResult: OpenAIService.AnalysisResult?
-    @State private var errorMessage: String?
-    @State private var saved = false
+    @State private var didSave = false
 
     var body: some View {
         NavigationStack {
@@ -24,10 +23,10 @@ struct SnapView: View {
                             promptSection
                         } else if isAnalyzing {
                             analyzingSection
-                        } else if let result = analysisResult {
-                            resultSection(result)
-                        } else if let error = errorMessage {
-                            errorSection(error)
+                        } else if didSave {
+                            savedSection
+                        } else {
+                            previewSection
                         }
                     }
                     .padding(16)
@@ -39,15 +38,9 @@ struct SnapView: View {
             .sheet(isPresented: $showCamera) {
                 CameraView(capturedImage: $capturedImage)
                     .ignoresSafeArea()
-                    .onChange(of: capturedImage) { _, newValue in
-                        if newValue != nil { analyzePhoto() }
-                    }
             }
             .sheet(isPresented: $showPhotoPicker) {
                 PhotoPickerView(selectedImage: $capturedImage)
-                    .onChange(of: capturedImage) { _, newValue in
-                        if newValue != nil { analyzePhoto() }
-                    }
             }
         }
     }
@@ -99,6 +92,53 @@ struct SnapView: View {
         }
     }
 
+    private var previewSection: some View {
+        VStack(spacing: 24) {
+            Spacer().frame(height: 20)
+
+            if let image = capturedImage {
+                Image(uiImage: image)
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(maxHeight: 300)
+                    .clipShape(RoundedRectangle(cornerRadius: 20))
+                    .shadow(color: Color.appTextPrimary.opacity(0.1), radius: 12, y: 6)
+            }
+
+            Text("Looking good!")
+                .font(.system(size: 20, weight: .bold, design: .rounded))
+                .foregroundStyle(Color.appTextPrimary)
+
+            Text("Ready to save this snap to your journal?")
+                .font(.system(size: 16, design: .rounded))
+                .foregroundStyle(Color.appTextSecondary)
+
+            VStack(spacing: 12) {
+                Button {
+                    HapticManager.medium()
+                    analyzeAndSave()
+                } label: {
+                    Label("Analyze", systemImage: "sparkles")
+                        .font(.system(size: 17, weight: .bold, design: .rounded))
+                        .foregroundStyle(.white)
+                        .frame(maxWidth: .infinity)
+                        .padding(.vertical, 16)
+                        .background(Color.appPrimary, in: Capsule())
+                }
+
+                Button {
+                    HapticManager.light()
+                    resetSnap()
+                } label: {
+                    Text("Retake")
+                        .font(.system(size: 16, weight: .semibold, design: .rounded))
+                        .foregroundStyle(Color.appTextSecondary)
+                }
+            }
+            .padding(.horizontal, 24)
+        }
+    }
+
     private var analyzingSection: some View {
         VStack(spacing: 24) {
             Spacer().frame(height: 20)
@@ -118,7 +158,6 @@ struct SnapView: View {
                 .font(.system(size: 18, weight: .semibold, design: .rounded))
                 .foregroundStyle(Color.appTextPrimary)
 
-            // Shimmer loading cards
             VStack(spacing: 12) {
                 ForEach(0..<3, id: \.self) { _ in
                     RoundedRectangle(cornerRadius: 12)
@@ -131,40 +170,18 @@ struct SnapView: View {
         }
     }
 
-    private func resultSection(_ result: OpenAIService.AnalysisResult) -> some View {
-        VStack(spacing: 20) {
-            if let image = capturedImage {
-                Image(uiImage: image)
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .frame(maxHeight: 220)
-                    .clipShape(RoundedRectangle(cornerRadius: 20))
-                    .shadow(color: Color.appTextPrimary.opacity(0.1), radius: 12, y: 6)
-            }
+    private var savedSection: some View {
+        VStack(spacing: 24) {
+            Spacer().frame(height: 40)
 
-            AnalysisCardView(analysis: result)
+            BubMascot(pose: .celebrating, size: 160)
 
-            if !saved {
-                Button {
-                    HapticManager.success()
-                    saveToJournal(result)
-                } label: {
-                    Label("Save to Journal", systemImage: "square.and.arrow.down.fill")
-                        .font(.system(size: 17, weight: .bold, design: .rounded))
-                        .foregroundStyle(.white)
-                        .frame(maxWidth: .infinity)
-                        .padding(.vertical, 16)
-                        .background(Color.appSuccess, in: Capsule())
-                }
-                .padding(.horizontal, 24)
-            } else {
-                HStack(spacing: 8) {
-                    Image(systemName: "checkmark.circle.fill")
-                    Text("Saved to Journal!")
-                }
-                .font(.system(size: 17, weight: .bold, design: .rounded))
-                .foregroundStyle(Color.appSuccess)
+            HStack(spacing: 8) {
+                Image(systemName: "checkmark.circle.fill")
+                Text("Saved to Journal!")
             }
+            .font(.system(size: 20, weight: .bold, design: .rounded))
+            .foregroundStyle(Color.appSuccess)
 
             Button {
                 HapticManager.light()
@@ -177,89 +194,49 @@ struct SnapView: View {
         }
     }
 
-    private func errorSection(_ error: String) -> some View {
-        VStack(spacing: 20) {
-            BubMascot(pose: .sad, size: 140)
-
-            Text("Oops!")
-                .font(.system(size: 22, weight: .bold, design: .rounded))
-                .foregroundStyle(Color.appTextPrimary)
-
-            Text(error)
-                .font(.system(size: 15, design: .rounded))
-                .foregroundStyle(Color.appTextSecondary)
-                .multilineTextAlignment(.center)
-                .padding(.horizontal, 20)
-
-            Button {
-                HapticManager.medium()
-                analyzePhoto()
-            } label: {
-                Label("Try Again", systemImage: "arrow.clockwise")
-                    .font(.system(size: 16, weight: .bold, design: .rounded))
-                    .foregroundStyle(.white)
-                    .padding(.horizontal, 32)
-                    .padding(.vertical, 14)
-                    .background(Color.appPrimary, in: Capsule())
-            }
-
-            Button {
-                HapticManager.light()
-                resetSnap()
-            } label: {
-                Text("Take a New Photo")
-                    .font(.system(size: 15, weight: .medium, design: .rounded))
-                    .foregroundStyle(Color.appTextSecondary)
-            }
-        }
-    }
-
     // MARK: - Actions
 
-    private func analyzePhoto() {
+    private func analyzeAndSave() {
         guard let image = capturedImage else { return }
         isAnalyzing = true
-        analysisResult = nil
-        errorMessage = nil
 
         Task {
-            do {
-                let result = try await OpenAIService.shared.analyzeStarterPhoto(image)
-                await MainActor.run {
-                    analysisResult = result
-                    isAnalyzing = false
-                    HapticManager.success()
-                }
-            } catch {
-                await MainActor.run {
-                    errorMessage = error.localizedDescription
-                    isAnalyzing = false
-                    HapticManager.error()
+            // Save photo to disk via PhotoStorageManager
+            let starterID = profiles.first?.id ?? UUID()
+            let paths = PhotoStorageManager.shared.savePhoto(image: image, starterID: starterID)
+
+            // Simulate analysis delay for shimmer UX
+            try? await Task.sleep(for: .seconds(1.5))
+
+            await MainActor.run {
+                let entry = JournalEntry(
+                    photoPath: paths?.photoPath,
+                    thumbnailPath: paths?.thumbPath
+                )
+                entry.starterProfile = profiles.first
+                modelContext.insert(entry)
+
+                isAnalyzing = false
+                didSave = true
+                HapticManager.success()
+
+                // Navigate back to Journal tab after a brief moment
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+                    withAnimation(.spring(response: 0.35, dampingFraction: 0.8)) {
+                        selectedTab = .journal
+                    }
+                    // Reset for next use
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                        resetSnap()
+                    }
                 }
             }
         }
-    }
-
-    private func saveToJournal(_ result: OpenAIService.AnalysisResult) {
-        let entry = JournalEntry(
-            photo: capturedImage?.jpegData(compressionQuality: 0.8),
-            colorAssessment: result.colorAssessment,
-            bubbleActivity: result.bubbleActivity,
-            riseLevel: result.riseLevel,
-            overallHealth: result.overallHealth,
-            guidance: result.guidance,
-            encouragement: result.encouragement
-        )
-        entry.starterProfile = profiles.first
-        modelContext.insert(entry)
-        saved = true
     }
 
     private func resetSnap() {
         capturedImage = nil
-        analysisResult = nil
-        errorMessage = nil
-        saved = false
         isAnalyzing = false
+        didSave = false
     }
 }

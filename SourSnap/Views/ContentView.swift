@@ -67,7 +67,7 @@ struct TabContainerView: View {
             JournalView()
                 .modifier(TabTransition(tab: .journal, selectedTab: selectedTab, dragOffset: dragOffset))
 
-            SnapView()
+            SnapView(selectedTab: $selectedTab)
                 .modifier(TabTransition(tab: .snap, selectedTab: selectedTab, dragOffset: dragOffset))
 
             ChatView()
