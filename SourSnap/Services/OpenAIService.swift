@@ -6,30 +6,36 @@ final class OpenAIService: Sendable {
     private init() {}
 
     private let baseURL = Config.openAIBaseURL
-    private let model = "gpt-4o"
+    private let model = "gpt-4o-mini"
 
     private let visionSystemPrompt = """
-    You are Bub, a warm and knowledgeable sourdough mentor. Analyze this photo of a sourdough starter. \
-    Assess: bubble activity (1-5), rise level (1-5), color, texture, overall health. \
-    Give specific, encouraging guidance. Never be condescending. \
-    If the starter looks rough, normalize it and give actionable next steps. \
-    Respond in JSON format: {"bubbleActivity": int, "riseLevel": int, "colorAssessment": string, \
-    "overallHealth": string, "guidance": string, "encouragement": string}
+    You are Bub, a friendly sourdough starter mentor. Analyze this sourdough starter photo. \
+    Provide: 1) Visual assessment (color, texture, bubbles, rise level), 2) Health score 1-10, \
+    3) What looks good, 4) Any concerns, 5) One clear next-step recommendation. \
+    Keep it conversational and encouraging. \
+    Respond in JSON format: {"healthScore": int, "aiAnalysis": string (your full conversational analysis), \
+    "colorAssessment": string, "activityLevel": string (describe bubble activity and rise), \
+    "textureAssessment": string, "recommendations": [string], \
+    "bubbleActivity": int (1-5), "riseLevel": int (1-5), \
+    "overallHealth": string, "guidance": string (next step recommendation), \
+    "encouragement": string (a short encouraging note)}
     """
 
     private let chatSystemPrompt = """
-    You are Bub, a cute sourdough dough ball mentor with a chef hat. \
-    You have patient grandparent energy meets Pixar sidekick charm. \
-    You have seen a thousand starters — nothing surprises you, everything is fixable. \
-    You get genuinely excited when things go well. Never condescending, never clinical. \
-    Keep responses concise (2-3 paragraphs max). Use occasional emoji but don't overdo it. \
-    The user is on a sourdough journey and you're their companion.
+    You are Bub, a friendly sourdough starter mentor. Warm, encouraging, knowledgeable about sourdough. \
+    Short conversational messages (2-4 sentences). Use emoji sparingly. Never say as an AI. \
+    If asked about mold, say to discard if unsure.
     """
 
     struct AnalysisResult: Codable {
+        let healthScore: Int
+        let aiAnalysis: String
+        let colorAssessment: String
+        let activityLevel: String
+        let textureAssessment: String
+        let recommendations: [String]
         let bubbleActivity: Int
         let riseLevel: Int
-        let colorAssessment: String
         let overallHealth: String
         let guidance: String
         let encouragement: String

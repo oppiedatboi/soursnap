@@ -205,13 +205,30 @@ struct SnapView: View {
             let starterID = profiles.first?.id ?? UUID()
             let paths = PhotoStorageManager.shared.savePhoto(image: image, starterID: starterID)
 
-            // Simulate analysis delay for shimmer UX
-            try? await Task.sleep(for: .seconds(1.5))
+            // Call OpenAI Vision API for starter analysis
+            var analysis: OpenAIService.AnalysisResult?
+            do {
+                analysis = try await OpenAIService.shared.analyzeStarterPhoto(image)
+            } catch {
+                // If analysis fails, we still save the entry without AI data
+                print("Vision analysis failed: \(error.localizedDescription)")
+            }
 
             await MainActor.run {
                 let entry = JournalEntry(
                     photoPath: paths?.photoPath,
-                    thumbnailPath: paths?.thumbPath
+                    thumbnailPath: paths?.thumbPath,
+                    healthScore: analysis.map { Double($0.healthScore) * 10 },
+                    aiAnalysis: analysis?.aiAnalysis,
+                    colorAssessment: analysis?.colorAssessment ?? "",
+                    activityLevel: analysis?.activityLevel ?? "",
+                    textureAssessment: analysis?.textureAssessment ?? "",
+                    recommendations: analysis?.recommendations,
+                    bubbleActivity: analysis?.bubbleActivity ?? 0,
+                    riseLevel: analysis?.riseLevel ?? 0,
+                    overallHealth: analysis?.overallHealth ?? "",
+                    guidance: analysis?.guidance ?? "",
+                    encouragement: analysis?.encouragement ?? ""
                 )
                 entry.starterProfile = profiles.first
                 modelContext.insert(entry)

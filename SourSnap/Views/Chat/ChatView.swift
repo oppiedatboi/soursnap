@@ -209,8 +209,8 @@ struct ChatView: View {
 
         isTyping = true
 
-        // Build history from recent messages (last 20)
-        let recentMessages = messages.suffix(20)
+        // Build history from recent messages (last 10)
+        let recentMessages = messages.suffix(10)
         let history = recentMessages.map { (role: $0.role, content: $0.content) }
 
         Task {
