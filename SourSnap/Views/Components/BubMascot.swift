@@ -22,6 +22,7 @@ struct BubMascot: View {
             .resizable()
             .aspectRatio(contentMode: .fit)
             .frame(width: size, height: size)
+            .scaleEffect(isBreathing ? 1.02 : 1.0)
             .offset(y: isBreathing ? -2 : 2)
             .animation(
                 .easeInOut(duration: 2)

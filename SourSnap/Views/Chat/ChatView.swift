@@ -45,11 +45,18 @@ struct ChatView: View {
             VStack(spacing: 24) {
                 Spacer().frame(height: 20)
 
-                BubMascot(pose: .thinking, size: 160)
+                BubMascot(pose: .hero, size: 160)
 
-                Text("Ask me anything about sourdough!")
-                    .font(.system(size: 20, weight: .semibold, design: .rounded))
-                    .foregroundStyle(Color.appTextPrimary)
+                VStack(spacing: 8) {
+                    Text("Hey! I'm Bub, your sourdough buddy")
+                        .font(.system(size: 20, weight: .semibold, design: .rounded))
+                        .foregroundStyle(Color.appTextPrimary)
+                        .multilineTextAlignment(.center)
+
+                    Text("Ask me anything about your starter")
+                        .font(.system(size: 15, design: .rounded))
+                        .foregroundStyle(Color.appTextSecondary)
+                }
 
                 VStack(spacing: 10) {
                     ForEach(suggestedQuestions, id: \.self) { question in

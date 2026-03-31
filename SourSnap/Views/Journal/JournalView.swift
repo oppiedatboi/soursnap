@@ -28,15 +28,29 @@ struct JournalView: View {
 
     private var emptyState: some View {
         VStack(spacing: 20) {
-            BubMascot(pose: .sleeping, size: 180)
+            BubMascot(pose: .hero, size: 180)
 
             Text("Your journey starts with a snap!")
                 .font(.system(size: 20, weight: .semibold, design: .rounded))
                 .foregroundStyle(Color.appTextPrimary)
 
-            Text("Take your first photo in the Snap tab")
+            Text("Capture your starter's progress and watch it grow")
                 .font(.system(size: 15, design: .rounded))
                 .foregroundStyle(Color.appTextSecondary)
+                .multilineTextAlignment(.center)
+                .padding(.horizontal, 32)
+
+            Button {
+                HapticManager.medium()
+                NotificationCenter.default.post(name: .switchToSnapTab, object: nil)
+            } label: {
+                Label("Take your first starter photo", systemImage: "camera.fill")
+                    .font(.system(size: 16, weight: .bold, design: .rounded))
+                    .foregroundStyle(.white)
+                    .padding(.horizontal, 28)
+                    .padding(.vertical, 14)
+                    .background(Color.appPrimary, in: Capsule())
+            }
         }
     }
 

@@ -1,5 +1,9 @@
 import SwiftUI
 
+extension Notification.Name {
+    static let switchToSnapTab = Notification.Name("switchToSnapTab")
+}
+
 struct ContentView: View {
     @AppStorage("hasSeenOnboarding") private var hasSeenOnboarding = false
     @State private var selectedTab: AppTab = .journal
@@ -22,6 +26,11 @@ struct ContentView: View {
 
             // Custom tab bar
             SlidingTabBar(selectedTab: $selectedTab)
+        }
+        .onReceive(NotificationCenter.default.publisher(for: .switchToSnapTab)) { _ in
+            withAnimation(.spring(response: 0.35, dampingFraction: 0.8)) {
+                selectedTab = .snap
+            }
         }
         .gesture(
             DragGesture()
