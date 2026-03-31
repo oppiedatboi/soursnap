@@ -126,6 +126,11 @@ struct ProfileView: View {
                 actionsSection
                     .opacity(appeared ? 1 : 0)
                     .offset(y: appeared ? 0 : 20)
+
+                // Feeding history
+                feedingHistorySection
+                    .opacity(appeared ? 1 : 0)
+                    .offset(y: appeared ? 0 : 20)
             }
             .padding(16)
             .padding(.bottom, 100)
@@ -161,7 +166,7 @@ struct ProfileView: View {
         HStack(spacing: 12) {
             statCard(value: "\(profile.daysSinceBorn)", label: "Days Old", icon: "calendar")
             statCard(value: "\(entries.count)", label: "Total Snaps", icon: "camera.fill")
-            statCard(value: "\(currentStreak)", label: "Day Streak", icon: "flame.fill")
+            statCard(value: "\(feedingStreak)", label: "Feed Streak", icon: "flame.fill")
         }
     }
 
@@ -283,6 +288,127 @@ struct ProfileView: View {
                         .overlay(RoundedRectangle(cornerRadius: 12).stroke(Color.appBorder, lineWidth: 1))
                 }
             }
+        }
+    }
+
+    // MARK: - Feeding History
+
+    private var recentFeedings: [FeedingLog] {
+        feedingLogs
+            .filter { $0.starterProfile?.id == profile?.id }
+            .sorted { $0.date > $1.date }
+            .prefix(7)
+            .map { $0 }
+    }
+
+    private var feedingStreak: Int {
+        let calendar = Calendar.current
+        let profileLogs = feedingLogs.filter { $0.starterProfile?.id == profile?.id }
+        let sortedDates = profileLogs.map { calendar.startOfDay(for: $0.date) }
+        let uniqueDates = Set(sortedDates).sorted(by: >)
+
+        guard let first = uniqueDates.first else { return 0 }
+
+        var streak = 0
+        var expectedDate = calendar.startOfDay(for: .now)
+
+        if first < expectedDate {
+            expectedDate = calendar.date(byAdding: .day, value: -1, to: expectedDate)!
+        }
+
+        for date in uniqueDates {
+            if date == expectedDate {
+                streak += 1
+                expectedDate = calendar.date(byAdding: .day, value: -1, to: expectedDate)!
+            } else if date < expectedDate {
+                break
+            }
+        }
+
+        return streak
+    }
+
+    private var feedingHistorySection: some View {
+        VStack(alignment: .leading, spacing: 14) {
+            HStack {
+                Text("Recent Feedings")
+                    .font(.system(size: 16, weight: .bold, design: .rounded))
+                    .foregroundStyle(Color.appTextPrimary)
+
+                Spacer()
+
+                if feedingStreak > 0 {
+                    HStack(spacing: 4) {
+                        Image(systemName: "flame.fill")
+                            .font(.system(size: 12))
+                            .foregroundStyle(Color.appAlert)
+                        Text("\(feedingStreak) day streak")
+                            .font(.system(size: 12, weight: .semibold, design: .rounded))
+                            .foregroundStyle(Color.appAlert)
+                    }
+                    .padding(.horizontal, 8)
+                    .padding(.vertical, 4)
+                    .background(Color.appAlert.opacity(0.12), in: Capsule())
+                }
+            }
+
+            if recentFeedings.isEmpty {
+                HStack {
+                    Spacer()
+                    VStack(spacing: 8) {
+                        Image(systemName: "drop")
+                            .font(.system(size: 24))
+                            .foregroundStyle(Color.appTextSecondary)
+                        Text("No feedings logged yet")
+                            .font(.system(size: 14, design: .rounded))
+                            .foregroundStyle(Color.appTextSecondary)
+                    }
+                    .padding(.vertical, 16)
+                    Spacer()
+                }
+            } else {
+                ForEach(recentFeedings) { log in
+                    feedingRow(log)
+                }
+            }
+        }
+        .padding(16)
+        .background(Color.appSurface, in: RoundedRectangle(cornerRadius: 16))
+        .overlay(RoundedRectangle(cornerRadius: 16).stroke(Color.appBorder, lineWidth: 1))
+    }
+
+    private func feedingRow(_ log: FeedingLog) -> some View {
+        VStack(alignment: .leading, spacing: 6) {
+            HStack {
+                Text(log.date.formatted(.dateTime.weekday(.abbreviated).month(.abbreviated).day()))
+                    .font(.system(size: 13, weight: .semibold, design: .rounded))
+                    .foregroundStyle(Color.appTextPrimary)
+
+                Spacer()
+
+                Text(log.date.formatted(.dateTime.hour().minute()))
+                    .font(.system(size: 12, design: .rounded))
+                    .foregroundStyle(Color.appTextSecondary)
+            }
+
+            HStack(spacing: 16) {
+                Label("\(Int(log.flourAmount))g flour", systemImage: "leaf")
+                    .font(.system(size: 12, design: .rounded))
+                    .foregroundStyle(Color.appTextSecondary)
+
+                Label("\(Int(log.waterAmount))g water", systemImage: "drop")
+                    .font(.system(size: 12, design: .rounded))
+                    .foregroundStyle(Color.appTextSecondary)
+            }
+
+            if !log.notes.isEmpty {
+                Text(log.notes)
+                    .font(.system(size: 12, design: .rounded))
+                    .foregroundStyle(Color.appTextSecondary)
+                    .lineLimit(2)
+            }
+
+            Divider()
         }
     }
 
