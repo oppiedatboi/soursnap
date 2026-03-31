@@ -19,6 +19,7 @@
 		2CF73702D6A157EEE14DE0EB /* Secrets.swift in Sources */ = {isa = PBXBuildFile; fileRef = E12FA88169E3EC8986CDF2D6 /* Secrets.swift */; };
 		36266AD06173FC596971B8B1 /* SlidingTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D2786A12F3766E3BB03D311 /* SlidingTabBar.swift */; };
 		456F90F7EE4AD7E613AF6A48 /* SignInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA7FA61CD4AD260281E1933C /* SignInView.swift */; };
+		4D5C540BAEC2669879B1605C /* StoreManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEEB85A57C399044980A3E2B /* StoreManager.swift */; };
 		523318663EFE42766772D3FA /* UserProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D18CD4096A8F7CEA36D9452 /* UserProfile.swift */; };
 		696AEF58D87E3020E5969AD6 /* JournalEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18B7F0604EBAA63054FF5EE3 /* JournalEntry.swift */; };
 		6E263D22893BEACD335EB32C /* PhotoStorageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C460C79E0B72520712AD6F3 /* PhotoStorageManager.swift */; };
@@ -62,6 +63,7 @@
 		DA7FA61CD4AD260281E1933C /* SignInView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInView.swift; sourceTree = "<group>"; };
 		DB58DC78D8A2C8799D875BC3 /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
 		DB9107F81E14E572EEB29780 /* OpenAIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenAIService.swift; sourceTree = "<group>"; };
+		DEEB85A57C399044980A3E2B /* StoreManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreManager.swift; sourceTree = "<group>"; };
 		E12FA88169E3EC8986CDF2D6 /* Secrets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Secrets.swift; sourceTree = "<group>"; };
 		E6728ED8DF0683B40CAA4E2B /* ShimmerEffect.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShimmerEffect.swift; sourceTree = "<group>"; };
 		F30803957622BA586F169B81 /* AppColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppColors.swift; sourceTree = "<group>"; };
@@ -147,6 +149,7 @@
 				7FD644911A24B4F1EA44E7DE /* HapticManager.swift */,
 				DB9107F81E14E572EEB29780 /* OpenAIService.swift */,
 				5C460C79E0B72520712AD6F3 /* PhotoStorageManager.swift */,
+				DEEB85A57C399044980A3E2B /* StoreManager.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -313,6 +316,7 @@
 				0FC309C70CABCB494F9343C3 /* SnapView.swift in Sources */,
 				A7A885F2C81F510835F01437 /* SourSnapApp.swift in Sources */,
 				82812445CCAB36556DDD995F /* StarterProfile.swift in Sources */,
+				4D5C540BAEC2669879B1605C /* StoreManager.swift in Sources */,
 				523318663EFE42766772D3FA /* UserProfile.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
