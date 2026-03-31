@@ -5,6 +5,8 @@ struct JournalEntryDetailView: View {
     @Environment(\.dismiss) private var dismiss
     @State private var appeared = false
     @State private var fullImage: UIImage?
+    @State private var showingShareSheet = false
+    @State private var shareImage: UIImage?
 
     var body: some View {
         NavigationStack {
@@ -108,6 +110,16 @@ struct JournalEntryDetailView: View {
             .navigationTitle("Entry Details")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
+                ToolbarItem(placement: .topBarLeading) {
+                    Button {
+                        HapticManager.medium()
+                        generateAndShare()
+                    } label: {
+                        Image(systemName: "square.and.arrow.up")
+                            .font(.system(size: 18, weight: .semibold))
+                            .foregroundStyle(Color.appPrimary)
+                    }
+                }
                 ToolbarItem(placement: .topBarTrailing) {
                     Button {
                         HapticManager.light()
@@ -119,6 +131,12 @@ struct JournalEntryDetailView: View {
                     }
                 }
             }
+            .sheet(isPresented: $showingShareSheet) {
+                if let shareImage {
+                    let deepLink = "Check out my starter on Kibo! https://kiboapp.com/s/\(entry.id.uuidString)"
+                    ShareSheet(items: [shareImage, deepLink])
+                }
+            }
             .onAppear {
                 withAnimation(.spring(response: 0.5, dampingFraction: 0.8)) {
                     appeared = true
@@ -128,6 +146,21 @@ struct JournalEntryDetailView: View {
                 loadFullImage()
             }
         }
+    }
+
+    private func generateAndShare() {
+        let starterName = entry.starterProfile?.name ?? "My Starter"
+        let daysOld = entry.starterProfile?.daysSinceBorn ?? 0
+        let bubImage = UIImage(named: MascotPose.celebrating.rawValue)
+
+        shareImage = ShareCardRenderer.render(
+            starterPhoto: fullImage,
+            starterName: starterName,
+            daysOld: daysOld,
+            healthScore: entry.healthScore,
+            bubMascotImage: bubImage
+        )
+        showingShareSheet = true
     }
 
     private func loadFullImage() {
