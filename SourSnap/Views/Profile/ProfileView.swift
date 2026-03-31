@@ -9,11 +9,15 @@ struct ProfileView: View {
 
     @State private var showingCreateProfile = false
     @State private var showingFeedingSheet = false
+    @State private var showingEditProfile = false
+    @State private var showingRename = false
+    @State private var showingArchiveConfirm = false
+    @State private var showingJourney = false
     @State private var appeared = false
     @State private var showCelebration = false
     @State private var confettiPieces: [ConfettiPiece] = []
 
-    private var profile: StarterProfile? { profiles.first }
+    private var profile: StarterProfile? { profiles.first(where: { $0.isActive }) }
 
     var body: some View {
         NavigationStack {
@@ -44,6 +48,32 @@ struct ProfileView: View {
                 if let profile {
                     FeedingSheet(profile: profile)
                 }
+            }
+            .sheet(isPresented: $showingEditProfile) {
+                if let profile {
+                    EditProfileSheet(profile: profile)
+                }
+            }
+            .sheet(isPresented: $showingJourney) {
+                if let profile {
+                    ProgressView(profile: profile)
+                }
+            }
+            .alert("Rename Starter", isPresented: $showingRename) {
+                if let profile {
+                    RenameAlert(profile: profile)
+                }
+            }
+            .alert("Archive Starter?", isPresented: $showingArchiveConfirm) {
+                Button("Archive", role: .destructive) {
+                    if let profile {
+                        profile.isActive = false
+                        HapticManager.medium()
+                    }
+                }
+                Button("Cancel", role: .cancel) {}
+            } message: {
+                Text("This will hide your starter from the profile. You can create a new one after archiving.")
             }
         }
     }
@@ -96,6 +126,11 @@ struct ProfileView: View {
                 actionsSection
                     .opacity(appeared ? 1 : 0)
                     .offset(y: appeared ? 0 : 20)
+
+                // Feeding history
+                feedingHistorySection
+                    .opacity(appeared ? 1 : 0)
+                    .offset(y: appeared ? 0 : 20)
             }
             .padding(16)
             .padding(.bottom, 100)
@@ -131,7 +166,7 @@ struct ProfileView: View {
         HStack(spacing: 12) {
             statCard(value: "\(profile.daysSinceBorn)", label: "Days Old", icon: "calendar")
             statCard(value: "\(entries.count)", label: "Total Snaps", icon: "camera.fill")
-            statCard(value: "\(currentStreak)", label: "Day Streak", icon: "flame.fill")
+            statCard(value: "\(feedingStreak)", label: "Feed Streak", icon: "flame.fill")
         }
     }
 
@@ -198,6 +233,182 @@ struct ProfileView: View {
                     .padding(.vertical, 14)
                     .background(Color.appPrimary, in: Capsule())
             }
+
+            Button {
+                HapticManager.light()
+                showingJourney = true
+            } label: {
+                Label("View Journey", systemImage: "chart.line.uptrend.xyaxis")
+                    .font(.system(size: 16, weight: .bold, design: .rounded))
+                    .foregroundStyle(Color.appPrimary)
+                    .frame(maxWidth: .infinity)
+                    .padding(.vertical, 14)
+                    .background(Color.appSurface, in: Capsule())
+                    .overlay(Capsule().stroke(Color.appPrimary, lineWidth: 1.5))
+            }
+
+            // Management row
+            HStack(spacing: 12) {
+                Button {
+                    HapticManager.light()
+                    showingRename = true
+                } label: {
+                    Label("Rename", systemImage: "pencil")
+                        .font(.system(size: 14, weight: .semibold, design: .rounded))
+                        .foregroundStyle(Color.appTextSecondary)
+                        .frame(maxWidth: .infinity)
+                        .padding(.vertical, 12)
+                        .background(Color.appSurface, in: RoundedRectangle(cornerRadius: 12))
+                        .overlay(RoundedRectangle(cornerRadius: 12).stroke(Color.appBorder, lineWidth: 1))
+                }
+
+                Button {
+                    HapticManager.light()
+                    showingEditProfile = true
+                } label: {
+                    Label("Edit Details", systemImage: "slider.horizontal.3")
+                        .font(.system(size: 14, weight: .semibold, design: .rounded))
+                        .foregroundStyle(Color.appTextSecondary)
+                        .frame(maxWidth: .infinity)
+                        .padding(.vertical, 12)
+                        .background(Color.appSurface, in: RoundedRectangle(cornerRadius: 12))
+                        .overlay(RoundedRectangle(cornerRadius: 12).stroke(Color.appBorder, lineWidth: 1))
+                }
+
+                Button {
+                    HapticManager.light()
+                    showingArchiveConfirm = true
+                } label: {
+                    Label("Archive", systemImage: "archivebox")
+                        .font(.system(size: 14, weight: .semibold, design: .rounded))
+                        .foregroundStyle(Color.appAlert)
+                        .frame(maxWidth: .infinity)
+                        .padding(.vertical, 12)
+                        .background(Color.appSurface, in: RoundedRectangle(cornerRadius: 12))
+                        .overlay(RoundedRectangle(cornerRadius: 12).stroke(Color.appBorder, lineWidth: 1))
+                }
+            }
+        }
+    }
+
+    // MARK: - Feeding History
+
+    private var recentFeedings: [FeedingLog] {
+        feedingLogs
+            .filter { $0.starterProfile?.id == profile?.id }
+            .sorted { $0.date > $1.date }
+            .prefix(7)
+            .map { $0 }
+    }
+
+    private var feedingStreak: Int {
+        let calendar = Calendar.current
+        let profileLogs = feedingLogs.filter { $0.starterProfile?.id == profile?.id }
+        let sortedDates = profileLogs.map { calendar.startOfDay(for: $0.date) }
+        let uniqueDates = Set(sortedDates).sorted(by: >)
+
+        guard let first = uniqueDates.first else { return 0 }
+
+        var streak = 0
+        var expectedDate = calendar.startOfDay(for: .now)
+
+        if first < expectedDate {
+            expectedDate = calendar.date(byAdding: .day, value: -1, to: expectedDate)!
+        }
+
+        for date in uniqueDates {
+            if date == expectedDate {
+                streak += 1
+                expectedDate = calendar.date(byAdding: .day, value: -1, to: expectedDate)!
+            } else if date < expectedDate {
+                break
+            }
+        }
+
+        return streak
+    }
+
+    private var feedingHistorySection: some View {
+        VStack(alignment: .leading, spacing: 14) {
+            HStack {
+                Text("Recent Feedings")
+                    .font(.system(size: 16, weight: .bold, design: .rounded))
+                    .foregroundStyle(Color.appTextPrimary)
+
+                Spacer()
+
+                if feedingStreak > 0 {
+                    HStack(spacing: 4) {
+                        Image(systemName: "flame.fill")
+                            .font(.system(size: 12))
+                            .foregroundStyle(Color.appAlert)
+                        Text("\(feedingStreak) day streak")
+                            .font(.system(size: 12, weight: .semibold, design: .rounded))
+                            .foregroundStyle(Color.appAlert)
+                    }
+                    .padding(.horizontal, 8)
+                    .padding(.vertical, 4)
+                    .background(Color.appAlert.opacity(0.12), in: Capsule())
+                }
+            }
+
+            if recentFeedings.isEmpty {
+                HStack {
+                    Spacer()
+                    VStack(spacing: 8) {
+                        Image(systemName: "drop")
+                            .font(.system(size: 24))
+                            .foregroundStyle(Color.appTextSecondary)
+                        Text("No feedings logged yet")
+                            .font(.system(size: 14, design: .rounded))
+                            .foregroundStyle(Color.appTextSecondary)
+                    }
+                    .padding(.vertical, 16)
+                    Spacer()
+                }
+            } else {
+                ForEach(recentFeedings) { log in
+                    feedingRow(log)
+                }
+            }
+        }
+        .padding(16)
+        .background(Color.appSurface, in: RoundedRectangle(cornerRadius: 16))
+        .overlay(RoundedRectangle(cornerRadius: 16).stroke(Color.appBorder, lineWidth: 1))
+    }
+
+    private func feedingRow(_ log: FeedingLog) -> some View {
+        VStack(alignment: .leading, spacing: 6) {
+            HStack {
+                Text(log.date.formatted(.dateTime.weekday(.abbreviated).month(.abbreviated).day()))
+                    .font(.system(size: 13, weight: .semibold, design: .rounded))
+                    .foregroundStyle(Color.appTextPrimary)
+
+                Spacer()
+
+                Text(log.date.formatted(.dateTime.hour().minute()))
+                    .font(.system(size: 12, design: .rounded))
+                    .foregroundStyle(Color.appTextSecondary)
+            }
+
+            HStack(spacing: 16) {
+                Label("\(Int(log.flourAmount))g flour", systemImage: "leaf")
+                    .font(.system(size: 12, design: .rounded))
+                    .foregroundStyle(Color.appTextSecondary)
+
+                Label("\(Int(log.waterAmount))g water", systemImage: "drop")
+                    .font(.system(size: 12, design: .rounded))
+                    .foregroundStyle(Color.appTextSecondary)
+            }
+
+            if !log.notes.isEmpty {
+                Text(log.notes)
+                    .font(.system(size: 12, design: .rounded))
+                    .foregroundStyle(Color.appTextSecondary)
+                    .lineLimit(2)
+            }
+
+            Divider()
         }
     }
 
@@ -487,6 +698,126 @@ struct FeedingSheet: View {
                             .foregroundStyle(Color.appTextSecondary)
                     }
                 }
+            }
+        }
+    }
+
+    private func formField<Content: View>(title: String, @ViewBuilder content: () -> Content) -> some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Text(title)
+                .font(.system(size: 13, weight: .bold, design: .rounded))
+                .foregroundStyle(Color.appTextSecondary)
+            content()
+        }
+    }
+}
+
+// MARK: - Rename Alert Content
+
+struct RenameAlert: View {
+    let profile: StarterProfile
+    @State private var newName = ""
+
+    var body: some View {
+        TextField("New name", text: $newName)
+            .onAppear { newName = profile.name }
+        Button("Save") {
+            if !newName.trimmingCharacters(in: .whitespaces).isEmpty {
+                profile.name = newName.trimmingCharacters(in: .whitespaces)
+                HapticManager.success()
+            }
+        }
+        Button("Cancel", role: .cancel) {}
+    }
+}
+
+// MARK: - Edit Profile Sheet
+
+struct EditProfileSheet: View {
+    let profile: StarterProfile
+    @Environment(\.dismiss) private var dismiss
+
+    @State private var flourType: String = ""
+    @State private var hydration: Double = 100
+    @State private var notes: String = ""
+
+    private let flourTypes = ["All-Purpose", "Bread Flour", "Whole Wheat", "Rye", "Spelt", "Einkorn", "Mix"]
+
+    var body: some View {
+        NavigationStack {
+            ZStack {
+                Color.appBackground.ignoresSafeArea()
+
+                ScrollView {
+                    VStack(spacing: 24) {
+                        BubMascot(pose: .jar, size: 80)
+
+                        Text("Edit \(profile.name)")
+                            .font(.system(size: 18, weight: .semibold, design: .rounded))
+                            .foregroundStyle(Color.appTextPrimary)
+
+                        VStack(spacing: 16) {
+                            formField(title: "Flour Type") {
+                                Picker("Flour", selection: $flourType) {
+                                    ForEach(flourTypes, id: \.self) { Text($0) }
+                                }
+                                .pickerStyle(.segmented)
+                            }
+
+                            formField(title: "Hydration: \(Int(hydration))%") {
+                                Slider(value: $hydration, in: 50...200, step: 5)
+                                    .tint(Color.appPrimary)
+                            }
+
+                            formField(title: "Notes") {
+                                TextField("Any notes about your starter...", text: $notes, axis: .vertical)
+                                    .lineLimit(3...6)
+                                    .font(.system(size: 16, design: .rounded))
+                                    .padding(14)
+                                    .background(Color.appSurface, in: RoundedRectangle(cornerRadius: 12))
+                                    .overlay(RoundedRectangle(cornerRadius: 12).stroke(Color.appBorder, lineWidth: 1))
+                            }
+                        }
+                        .padding(.horizontal, 16)
+
+                        Button {
+                            HapticManager.success()
+                            profile.flourType = flourType
+                            profile.hydrationRatio = hydration
+                            profile.notes = notes
+                            dismiss()
+                        } label: {
+                            Text("Save Changes")
+                                .font(.system(size: 17, weight: .bold, design: .rounded))
+                                .foregroundStyle(.white)
+                                .frame(maxWidth: .infinity)
+                                .padding(.vertical, 16)
+                                .background(Color.appPrimary, in: Capsule())
+                        }
+                        .padding(.horizontal, 24)
+                    }
+                    .padding(.top, 20)
+                    .padding(.bottom, 40)
+                }
+            }
+            .navigationTitle("Edit Starter")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button {
+                        HapticManager.light()
+                        dismiss()
+                    } label: {
+                        Image(systemName: "xmark.circle.fill")
+                            .font(.system(size: 24))
+                            .foregroundStyle(Color.appTextSecondary)
+                    }
+                }
+            }
+            .onAppear {
+                flourType = profile.flourType
+                hydration = profile.hydrationRatio
+                notes = profile.notes
             }
         }
     }
