@@ -7,6 +7,8 @@ struct ProfileView: View {
     @Query private var entries: [JournalEntry]
     @Query private var feedingLogs: [FeedingLog]
 
+    @Query private var userProfiles: [UserProfile]
+
     @State private var showingCreateProfile = false
     @State private var showingFeedingSheet = false
     @State private var showingEditProfile = false
@@ -18,6 +20,7 @@ struct ProfileView: View {
     @State private var confettiPieces: [ConfettiPiece] = []
 
     private var profile: StarterProfile? { profiles.first(where: { $0.isActive }) }
+    private var userProfile: UserProfile? { userProfiles.first }
 
     var body: some View {
         NavigationStack {
@@ -129,6 +132,11 @@ struct ProfileView: View {
 
                 // Feeding history
                 feedingHistorySection
+                    .opacity(appeared ? 1 : 0)
+                    .offset(y: appeared ? 0 : 20)
+
+                // Settings
+                settingsSection
                     .opacity(appeared ? 1 : 0)
                     .offset(y: appeared ? 0 : 20)
             }
@@ -410,6 +418,75 @@ struct ProfileView: View {
 
             Divider()
         }
+    }
+
+    // MARK: - Settings
+
+    private var settingsSection: some View {
+        VStack(alignment: .leading, spacing: 14) {
+            Text("Settings")
+                .font(.system(size: 16, weight: .bold, design: .rounded))
+                .foregroundStyle(Color.appTextPrimary)
+
+            if let userProfile {
+                Toggle(isOn: Binding(
+                    get: { userProfile.feedingReminderEnabled },
+                    set: { newValue in
+                        userProfile.feedingReminderEnabled = newValue
+                        if newValue {
+                            Task {
+                                let granted = await NotificationManager.shared.requestPermission()
+                                if granted, let starterName = profile?.name {
+                                    NotificationManager.shared.scheduleFeedingReminder(
+                                        at: userProfile.feedingReminderTime,
+                                        starterName: starterName
+                                    )
+                                } else {
+                                    userProfile.feedingReminderEnabled = false
+                                }
+                            }
+                        } else {
+                            NotificationManager.shared.cancelFeedingReminder()
+                        }
+                    }
+                )) {
+                    HStack(spacing: 10) {
+                        Image(systemName: "bell.fill")
+                            .font(.system(size: 14))
+                            .foregroundStyle(Color.appPrimary)
+                        Text("Feeding Reminders")
+                            .font(.system(size: 15, weight: .medium, design: .rounded))
+                            .foregroundStyle(Color.appTextPrimary)
+                    }
+                }
+                .tint(Color.appPrimary)
+
+                if userProfile.feedingReminderEnabled {
+                    DatePicker(
+                        "Reminder Time",
+                        selection: Binding(
+                            get: { userProfile.feedingReminderTime },
+                            set: { newTime in
+                                userProfile.feedingReminderTime = newTime
+                                if let starterName = profile?.name {
+                                    NotificationManager.shared.scheduleFeedingReminder(
+                                        at: newTime,
+                                        starterName: starterName
+                                    )
+                                }
+                            }
+                        ),
+                        displayedComponents: .hourAndMinute
+                    )
+                    .font(.system(size: 15, design: .rounded))
+                    .tint(Color.appPrimary)
+                }
+            }
+        }
+        .padding(16)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(Color.appSurface, in: RoundedRectangle(cornerRadius: 16))
+        .overlay(RoundedRectangle(cornerRadius: 16).stroke(Color.appBorder, lineWidth: 1))
     }
 
     // MARK: - Celebration
